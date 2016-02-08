@@ -1,6 +1,10 @@
 [
     {
-        "caption": "Atomizr: Convert Sublime Text to Atom",
-        "command": "to_atom"
+        "caption": "Atomizr: Convert Sublime Text into Atom",
+        "command": "subl_to_atom"
+    },
+    {
+        "caption": "Atomizr: Convert Atom snippets (CSON to JSON)",
+        "command": "atom_to_atom"
     }
 ]
