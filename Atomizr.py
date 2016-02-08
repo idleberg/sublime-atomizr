@@ -1,6 +1,6 @@
 import sublime, sublime_plugin
 
-class AtomizrCommand(sublime_plugin.TextCommand):
+class ToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import json
@@ -22,7 +22,6 @@ class AtomizrCommand(sublime_plugin.TextCommand):
                 array[item['trigger']] = {'prefix': item['trigger'], 'body':  item['contents']}
             except KeyError:
                 pass
-            ˆ
 
         atom = {scope: (array)}
 
