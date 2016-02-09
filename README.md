@@ -25,7 +25,7 @@ With [auto_upgrade](http://wbond.net/sublime_packages/package_control/settings/)
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
 * Convert Sublime Text into Atom
-* <strike>Convert Atom into Sublime Text</strike> (in progress)
+* Convert Atom into Sublime Text
 * Convert Atom snippets (CSON to JSON)
 
 
