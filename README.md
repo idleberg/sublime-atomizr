@@ -18,8 +18,7 @@ With [auto_upgrade](http://wbond.net/sublime_packages/package_control/settings/)
 
 ### Manual installation
 
-1. Download the files using the GitHub [.zip](https://github.com/idleberg/sublime-atomizr/archive/master.zip) download option
-2. Unzip the files to your Sublime Text `Packages` directory
+Since package dependencies are handled by Package Control, there is no support for manual installation!
 
 ## Usage
 
@@ -28,7 +27,6 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Convert Sublime Text into Atom
 * Convert Atom into Sublime Text
 * Convert Atom snippets (CSON to JSON)
-
 
 # License
 
