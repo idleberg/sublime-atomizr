@@ -6,15 +6,21 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         import json
         
+        # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
+        # interprete and validate date
         try:
             data = json.loads(selection)
         except ValueError:
             sublime.error_message("Error: No valid JSON")
 
-        scope = "." + data['scope']
-        completions = data['completions']
+        # but is it a Sublime Text completion?
+        try:
+            scope = "." + data['scope']
+            completions = data['completions']
+        except:
+            sublime.error_message("Error: No Sublime Text completions")
 
         array = {}
 
@@ -26,9 +32,9 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
 
         atom = {scope: (array)}
 
+        # write converted data to view
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(atom, sort_keys=True, indent=4, separators=(',', ': ')))
-
 
 # TODO: Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
@@ -36,8 +42,10 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         import cson, json
         
+        # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
+        # interprete and validate date
         try:
             data = cson.loads(selection)
         except:
@@ -46,19 +54,21 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         print("\nNot yet implemented, printing JSON instead:")
         print(json.dumps(data))
 
-
 # Converts Atom snippets (CSON into JSON)
 class AtomToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import cson, json
         
+        # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
+        # interprete and validate date
         try:
             data = cson.loads(selection)
         except:
             sublime.error_message("Error: No valid CSON")
 
+        # write converted data to view
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=4, separators=(',', ': ')))
