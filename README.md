@@ -26,9 +26,10 @@ Since package dependencies are handled by Package Control, there is no support f
 
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
-* Convert Sublime Text into Atom
-* Convert Atom into Sublime Text
-* Convert Atom snippets (CSON to JSON)
+* Automatic conversion (based on scope)
+* Convert Sublime Text to Atom
+* Convert Atom to Sublime Text
+* Convert Atom snippet format (CSON to JSON, or vice versa)
 
 # License
 

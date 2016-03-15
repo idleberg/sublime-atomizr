@@ -1,14 +1,18 @@
 [
     {
-        "caption": "Atomizr: Convert Sublime Text completions into Atom snippet",
+        "caption": "Atomizr: Automatic conversion",
+        "command": "automizr"
+    },
+    {
+        "caption": "Atomizr: Convert Sublime Text to Atom",
         "command": "subl_to_atom"
     },
     {
-        "caption": "Atomizr: Convert Atom snippet into Sublime Text completions",
+        "caption": "Atomizr: Convert Atom to Sublime Text",
         "command": "atom_to_subl"
     },
     {
-        "caption": "Atomizr: Convert Atom snippets (CSON to JSON)",
+        "caption": "Atomizr: Convert Atom snippet format",
         "command": "atom_to_atom"
     }
 ]
