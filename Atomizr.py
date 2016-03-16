@@ -3,11 +3,9 @@ import sublime, sublime_plugin, sys
 # Automatic conversion, based on scope
 class AutomizrCommand(sublime_plugin.TextCommand):
 
-    def run(self):
+    def run(self, edit):
         
         scope = self.view.scope_name(self.view.sel()[0].a)
-
-        print(scope)
 
         if "source.json" in scope: 
             print("Atomizr: JSON detected, trying to convert")
@@ -16,7 +14,7 @@ class AutomizrCommand(sublime_plugin.TextCommand):
             print("Atomizr: CoffeeScript detected, trying to convert")
             self.view.run_command('atom_to_subl')
         else:
-            print("Atomizr: No supported scope, aborting")
+            sublime.error_message("Warning: Unsupported scope, aborting")
 
 # Converts Sublime Text completions into Atom snippets
 class SublToAtomCommand(sublime_plugin.TextCommand):
