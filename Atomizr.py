@@ -71,6 +71,8 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(atom, sort_keys=True, indent=4, separators=(',', ': ')))
 
+        # installed_packages = sublime.installed_packages_path()
+
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
 
@@ -109,6 +111,12 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
 
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=4, separators=(',', ': ')))
+
+        # set syntax to JSON
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
 # Converts Atom snippets (CSON into JSON)
 class AtomToAtomCommand(sublime_plugin.TextCommand):
