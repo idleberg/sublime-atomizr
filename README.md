@@ -29,7 +29,6 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Automatic conversion (based on scope)
 * Convert Sublime Text to Atom
 * Convert Atom to Sublime Text
-* Convert Atom snippet format (CSON to JSON, or vice versa)
 
 # License
 
