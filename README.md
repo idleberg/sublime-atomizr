@@ -20,7 +20,7 @@ With [auto_upgrade](http://wbond.net/sublime_packages/package_control/settings/)
 
 ### Manual installation
 
-Since package dependencies are handled by Package Control, there is no support for manual installation!
+Since [package dependencies](https://packagecontrol.io/docs/dependencies) are handled by Package Control, manual installation is not recommended!
 
 ## Usage
 
