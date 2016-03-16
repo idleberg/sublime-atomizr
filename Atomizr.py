@@ -15,7 +15,7 @@ class AutomizrCommand(sublime_plugin.TextCommand):
         elif "source.coffee" in scope:
             print("Atomizr: CoffeeScript detected, trying to convert")
             self.view.run_command('atom_to_subl')
-        else
+        else:
             print("Atomizr: No supported scope, aborting")
 
 # Converts Sublime Text completions into Atom snippets
