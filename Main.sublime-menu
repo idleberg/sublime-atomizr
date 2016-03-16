@@ -1,22 +1,29 @@
 [
   {
     "id": "tools",
+    "caption": "Tools",
     "children": [
       {
-        "id": "atomizr",
-        "caption": "Atomizr",
+        "id": "packages",
+        "caption": "Packages",
         "children": [
           {
-            "caption": "Prettify Code",
-            "command": "htmlprettify"
-          },
-          {
-            "caption": "Set Prettify Preferences",
-            "command": "htmlprettify_set_prettify_prefs"
-          },
-          {
-            "caption": "Set Plugin Options",
-            "command": "htmlprettify_set_plugin_options"
+            "id": "atomizr",
+            "caption": "Atomizr",
+            "children": [
+              {
+                "caption": "Automatic conversion",
+                "command": "automizr"
+              },
+              {
+                "caption": "Convert Sublime Text to Atom",
+                "command": "subl_to_atom"
+              },
+              {
+                "caption": "Convert Atom to Sublime Text",
+                "command": "atom_to_subl"
+              }
+            ]
           }
         ]
       }
