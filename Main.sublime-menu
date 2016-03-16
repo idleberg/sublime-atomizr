@@ -1,0 +1,25 @@
+[
+  {
+    "id": "tools",
+    "children": [
+      {
+        "id": "atomizr",
+        "caption": "Atomizr",
+        "children": [
+          {
+            "caption": "Prettify Code",
+            "command": "htmlprettify"
+          },
+          {
+            "caption": "Set Prettify Preferences",
+            "command": "htmlprettify_set_prettify_prefs"
+          },
+          {
+            "caption": "Set Plugin Options",
+            "command": "htmlprettify_set_plugin_options"
+          }
+        ]
+      }
+    ]
+  }
+]
