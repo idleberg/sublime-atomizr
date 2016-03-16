@@ -1,5 +1,16 @@
 import sublime, sublime_plugin, sys
 
+# https://gist.github.com/idleberg/fca633438329cc5ae327
+SCOPES = [
+    [ "source.c++", ".source.cpp" ],
+    [ "source.java-props", ".source.java-properties" ],
+    [ "source.objc++", ".source.objcpp" ],
+    [ "source.php", ".source.html.php" ],
+    [ "source.scss", ".source.css.scss" ],
+    [ "source.todo", ".text.todo" ],
+    [ "source.markdown", ".source.gfm" ]
+]
+
 # Automatic conversion, based on scope
 class AutomizrCommand(sublime_plugin.TextCommand):
 
@@ -33,7 +44,14 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
 
         # but is it a Sublime Text completion?
         try:
-            scope = "." + data['scope']
+            # get scope, convert if necessary
+            for subl, atom in SCOPES:
+                if data['scope'] == subl:
+                    scope = atom
+                    break
+                else:
+                    scope = "." + data['scope']
+
             completions = data['completions']
         except:
             sublime.error_message("Error: Not a Sublime Text completions file")
@@ -72,8 +90,14 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
 
         # but is it an Atom snippet?
         try:
+            # get scope, convert if necessary
             for key in data.keys():
-                scope = key
+                for subl, atom in SCOPES:
+                    if key == atom:
+                        scope = subl
+                        break
+                    else:
+                        scope = key.lstrip(".")
 
                 for item in (data[key]):
                     completions.append( {"trigger": data[key][item]["prefix"], "contents": data[key][item]["body"]} )
@@ -81,7 +105,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
             sublime.error_message("Error: Not an Atom snippet file")
             return
 
-        subl = {"scope": scope.lstrip("."), "completions": completions}
+        subl = {"scope": scope, "completions": completions}
 
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=4, separators=(',', ': ')))
