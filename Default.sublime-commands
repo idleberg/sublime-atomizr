@@ -10,9 +10,5 @@
     {
         "caption": "Atomizr: Convert Atom to Sublime Text",
         "command": "atom_to_subl"
-    },
-    {
-        "caption": "Atomizr: Convert Atom snippet format",
-        "command": "atom_to_atom"
     }
 ]
