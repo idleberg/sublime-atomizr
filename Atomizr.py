@@ -3,7 +3,7 @@ import sublime, sublime_plugin, sys
 # Automatic conversion, based on scope
 class AutomizrCommand(sublime_plugin.TextCommand):
 
-    def run(self, edit):
+    def run(self):
         
         scope = self.view.scope_name(self.view.sel()[0].a)
 
