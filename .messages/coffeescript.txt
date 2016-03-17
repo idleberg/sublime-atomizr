@@ -1,13 +1,13 @@
-User action required
+USER ACTION REQUIRED
 ====================
 
-If you carefully studied the readme, you  already know that you need to install
+If you carefully studied the readme, you already know that you need to install
 the “Better CoffeeScript” package in order to use all features of Atomizr.
 
 Otherwise, please read on.
 
 You can install “Better CoffeePress” in many different ways, the most
-conventient being Package Control:
+convenient being Package Control:
 
     1. Choose “Install Package” from the Command Palette
     2. Type “Better CoffeePress” and press Enter
