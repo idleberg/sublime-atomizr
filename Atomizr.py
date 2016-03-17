@@ -79,6 +79,41 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
         # set syntax to CSON, requires Better CoffeeScript package
         self.view.set_syntax_file("Packages/Better CoffeeScript/CoffeeScript.tmLanguage")
 
+# Converts Sublime Text completions into Atom snippets
+class SublSnipToAtomCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import cson
+        from lxml import etree
+
+        # read data from view
+        selection = self.view.substr(sublime.Region(0, self.view.size()))
+
+        # interprete and validate data
+        try:
+            xml = etree.fromstring(selection)
+        except:
+            sublime.error_message("Atomizr: Invalid XML, aborting conversion")
+            return
+        
+        for s in xml.xpath("//snippet"):            
+            for child in s.getchildren():
+                if child.tag == "scope":
+                    scope = child.text
+                elif child.tag == "tabTrigger":
+                    prefix = child.text
+                elif child.tag == "content":
+                    body = child.text.strip()
+
+        atom = {scope: { prefix: { "prefix": prefix, "body": body} } }
+
+        # write converted data to view
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=4, separators=(',', ': ')))
+
+        # set syntax to CSON, requires Better CoffeeScript package
+        self.view.set_syntax_file("Packages/Better CoffeeScript/CoffeeScript.tmLanguage")
+
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
 

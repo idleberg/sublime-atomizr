@@ -28,7 +28,8 @@ Since [package dependencies](https://packagecontrol.io/docs/dependencies) are ha
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
 * Automatic conversion
-* Convert Sublime Text to Atom
+* Convert Sublime Text to Atom (completions)
+* Convert Sublime Text to Atom (snippet)
 * Convert Atom to Sublime Text
 
 Since automatic conversion is based on scope, make sure the [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) package is installed as well.
