@@ -18,20 +18,24 @@ class AutomizrCommand(sublime_plugin.TextCommand):
         
         scope = self.view.scope_name(self.view.sel()[0].a)
 
+        print(scope)
+
         if "source.json" in scope: 
             print("Atomizr: JSON detected, trying to convert")
             self.view.run_command('subl_to_atom')
         elif "source.coffee" in scope:
             print("Atomizr: CoffeeScript detected, trying to convert")
             self.view.run_command('atom_to_subl')
+        elif "text.plain" in scope:
+            sublime.error_message("Atomizr: Automatic conversion requires the 'Better CoffeeScript' package to be installed")
         else:
-            sublime.error_message("Warning: Unsupported scope, aborting")
+            sublime.error_message("Atomizr: Unsupported scope, aborting")
 
 # Converts Sublime Text completions into Atom snippets
 class SublToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        import json
+        import cson, json
         
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
@@ -40,7 +44,8 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
         try:
             data = json.loads(selection)
         except ValueError:
-            sublime.error_message("Error: Invalid JSON")
+            sublime.error_message("Atomizr: Invalid JSON")
+            return
 
         # but is it a Sublime Text completion?
         try:
@@ -54,7 +59,7 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
 
             completions = data['completions']
         except:
-            sublime.error_message("Error: Not a Sublime Text completions file")
+            sublime.error_message("Atomizr: Not a Sublime Text completions file")
             return
 
         array = {}
@@ -69,9 +74,10 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(atom, sort_keys=True, indent=4, separators=(',', ': ')))
+        self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=4, separators=(',', ': ')))
 
-        # installed_packages = sublime.installed_packages_path()
+        # set syntax to CSON, requires Better CoffeeScript package
+        self.view.set_syntax_file("Packages/Better CoffeeScript/CoffeeScript.tmLanguage")
 
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
@@ -86,7 +92,8 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         try:
             data = cson.loads(selection)
         except:
-            sublime.error_message("Error: Invalid CSON")
+            sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
+            return
 
         completions = []
 
@@ -104,7 +111,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
                 for item in (data[key]):
                     completions.append( {"trigger": data[key][item]["prefix"], "contents": data[key][item]["body"]} )
         except:
-            sublime.error_message("Error: Not an Atom snippet file")
+            sublime.error_message("Atomizr: Not an Atom snippet file")
             return
 
         subl = {"scope": scope, "completions": completions}
@@ -131,7 +138,8 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
         try:
             data = cson.loads(selection)
         except:
-            sublime.error_message("Error: Invalid CSON")
+            sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
+            return
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
