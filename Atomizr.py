@@ -26,6 +26,9 @@ class AutomizrCommand(sublime_plugin.TextCommand):
         elif "source.coffee" in scope:
             print("Atomizr: CoffeeScript detected, trying to convert")
             self.view.run_command('atom_to_subl')
+        elif "text.xml" in scope:
+            print("Atomizr: XML detected, trying to convert")
+            self.view.run_command('subl_snips_to_atom')
         elif "text.plain" in scope:
             sublime.error_message("Atomizr: Automatic conversion requires the 'Better CoffeeScript' package to be installed")
         else:
