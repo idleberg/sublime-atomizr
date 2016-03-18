@@ -18,8 +18,6 @@ class AutomizrCommand(sublime_plugin.TextCommand):
         
         scope = self.view.scope_name(self.view.sel()[0].a)
 
-        print(scope)
-
         if "source.json" in scope: 
             print("Atomizr: JSON detected, trying to convert")
             self.view.run_command('subl_to_atom')
