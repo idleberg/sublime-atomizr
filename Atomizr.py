@@ -96,17 +96,18 @@ class SublSnipToAtomCommand(sublime_plugin.TextCommand):
         except:
             sublime.error_message("Atomizr: Invalid XML, aborting conversion")
             return
-        
-        for s in xml.xpath("//snippet"):            
-            for child in s.getchildren():
-                if child.tag == "scope":
-                    scope = child.text
-                elif child.tag == "tabTrigger":
-                    prefix = child.text
-                elif child.tag == "content":
-                    body = child.text.strip()
 
-        atom = {scope: { prefix: { "prefix": prefix, "body": body} } }
+        body = xml.find("./content").text
+        scope = xml.find("./scope").text
+        prefix = xml.find("./tabTrigger").text
+
+        # <description> is optional
+        try:
+            description = xml.find("./description").text
+        except:
+            description = prefix
+
+        atom = {scope: { description: { "prefix": prefix, "body": body} } }
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
