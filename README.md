@@ -32,7 +32,7 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Convert Sublime Text to Atom (snippet)
 * Convert Atom to Sublime Text
 
-Since automatic conversion is based on scope, make sure the [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) package is installed as well.
+**Note:** Since automatic conversion is based on scope, make sure the [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) package is installed as well.
 
 ### Keyboard Shortcuts
 
