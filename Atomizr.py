@@ -84,26 +84,26 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
 class SublSnipToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        import cson
-        from lxml import etree
+        import cson, xmltodict
 
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
+        # xmltodict.parse(selection)
         # interprete and validate data
         try:
-            xml = etree.fromstring(selection)
+            xml = xmltodict.parse(selection)
         except:
             sublime.error_message("Atomizr: Invalid XML, aborting conversion")
             return
 
-        body = xml.find("./content").text
-        scope = xml.find("./scope").text
-        prefix = xml.find("./tabTrigger").text
+        body = xml['snippet']['content']
+        scope = xml['snippet']['scope']
+        prefix = xml['snippet']['tabTrigger']
 
         # <description> is optional
         try:
-            description = xml.find("./description").text
+            xml['snippet']['description']
         except:
             description = prefix
 
