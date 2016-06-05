@@ -111,7 +111,7 @@ class SublSnipToAtomCommand(sublime_plugin.TextCommand):
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=4, separators=(',', ': ')))
+        self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=2, separators=(',', ': ')))
 
         # set syntax to CSON, requires Better CoffeeScript package
         self.view.set_syntax_file("Packages/Better CoffeeScript/CoffeeScript.tmLanguage")
@@ -154,7 +154,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         subl = {"scope": scope, "completions": completions}
 
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=4, separators=(',', ': ')))
+        self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=2, separators=(',', ': ')))
 
         # set syntax to JSON
         if sublime.version() >= "3103":
@@ -180,4 +180,4 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=4, separators=(',', ': ')))
+        self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=2, separators=(',', ': ')))
