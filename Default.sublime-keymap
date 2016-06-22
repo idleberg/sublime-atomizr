@@ -1,19 +1,19 @@
 [
   {
     "keys": [
-      "ctrl+c", "ctrl+c"
+      "ctrl+alt+c", "ctrl+alt+c"
     ],
     "command": "automizr"
   },
   {
     "keys": [
-      "ctrl+a", "ctrl+s"
+      "ctrl+alt+a", "ctrl+alt+s"
     ],
     "command": "atom_to_subl"
   },
   {
     "keys": [
-      "ctrl+s", "ctrl+a"
+      "ctrl+alt+s", "ctrl+alt+a"
     ],
     "command": "subl_to_atom"
   }
