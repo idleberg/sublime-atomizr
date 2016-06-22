@@ -7,11 +7,11 @@ the “Better CoffeeScript” package in order to use all features of Atomizr.
 Otherwise, please read on.
 
 You can install “Better CoffeePress” in many different ways, the most
-convenient being Package Control:
+convenient being through Package Control:
 
     1. Choose “Install Package” from the Command Palette
     2. Type “Better CoffeePress” and press Enter
 
-Other ways to install the package are described on its GitHub page action:
+Other ways to install the package are described on its GitHub page:
 
     https://github.com/aponxi/sublime-better-coffeescript#via-source-control
