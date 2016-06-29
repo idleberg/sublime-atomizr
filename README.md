@@ -36,7 +36,7 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 
 ### Keyboard Shortcuts
 
-*The following examples all use the Mac OS X shortcuts, for Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> rather than just <kbd>Ctrl</kbd>.*
+*The following examples all use the macOS shortcuts, for Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> rather than just <kbd>Ctrl</kbd>.*
 
 Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>S</kbd> key for Sublime Text and the <kbd>A</kbd> key for Atom:
 
