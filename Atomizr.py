@@ -19,7 +19,7 @@ class AutomizrCommand(sublime_plugin.TextCommand):
 
         scope = self.view.scope_name(self.view.sel()[0].a)
 
-        if "source.json" or "source.sublimecompletions" in scope: 
+        if "source.json" in scope or "source.sublimecompletions" in scope: 
             print("Atomizr: JSON detected, trying to convert")
             self.view.run_command('subl_to_atom')
         elif "source.coffee" in scope:
@@ -192,15 +192,15 @@ class Helper():
     def get_coffee():
         import os
 
-        # Supported packages
+        # supported packages
         packages = ["Better CoffeeScript", "CoffeeScript"]
 
-        # Iterate over packages installed with Package Control
+        # iterate over packages installed with Package Control
         for package in packages:
             if os.path.isfile(sublime.installed_packages_path() + "/" + package + ".sublime-package") is True:
                 return "Packages/" + package + "/CoffeeScript.tmLanguage"
 
-        # Still found nothing, let's iterate over manually installed packages  
+        # still found nothing, let's iterate over manually installed packages  
         for package in packages:
             if os.path.isdir(sublime.packages_path() + "/" + package) is True:
                 return "Packages/" + package + "/CoffeeScript.tmLanguage"
