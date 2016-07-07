@@ -1,0 +1,9 @@
+USER ACTION REQUIRED
+====================
+
+Atomizr v0.12 depends on a new version of the cson module. Make sure to run
+upgrade the dependency through Package Control:
+
+    Choose “Satisfy Dependencies” from the Command Palette
+
+If you experience problems, try a clean install before reporting any issues!
