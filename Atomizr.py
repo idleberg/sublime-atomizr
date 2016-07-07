@@ -1,5 +1,6 @@
 import sublime, sublime_plugin, sys
 
+# Some Atom scopes are different from Sublime Text
 # https://gist.github.com/idleberg/fca633438329cc5ae327
 SCOPES = [
     [ "source.c++", ".source.cpp" ],
@@ -15,7 +16,7 @@ SCOPES = [
 class AutomizrCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        
+
         scope = self.view.scope_name(self.view.sel()[0].a)
 
         if "source.json" or "source.sublimecompletions" in scope: 
@@ -28,7 +29,7 @@ class AutomizrCommand(sublime_plugin.TextCommand):
             print("Atomizr: XML detected, trying to convert")
             self.view.run_command('subl_snip_to_atom')
         elif "text.plain" in scope:
-            sublime.error_message("Atomizr: Automatic conversion requires the 'Better CoffeeScript' package to be installed")
+            sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
         else:
             sublime.error_message("Atomizr: Unsupported scope, aborting")
 
@@ -37,7 +38,7 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import cson, json
-        
+
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
@@ -78,7 +79,9 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=4))
 
         # set syntax to CSON, requires Better CoffeeScript package
-        self.view.set_syntax_file("Packages/Better CoffeeScript/CoffeeScript.tmLanguage")
+        package = Helper.get_coffee()
+        if package is not False:
+            self.view.set_syntax_file(package)
 
 # Converts Sublime Text completions into Atom snippets
 class SublSnipToAtomCommand(sublime_plugin.TextCommand):
@@ -113,14 +116,16 @@ class SublSnipToAtomCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=2))
 
         # set syntax to CSON, requires Better CoffeeScript package
-        self.view.set_syntax_file("Packages/Better CoffeeScript/CoffeeScript.tmLanguage")
+        package = Helper.get_coffee()
+        if package is not False:
+            self.view.set_syntax_file(package)
 
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import cson, json
-        
+
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
@@ -166,7 +171,7 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import cson, json
-        
+
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
@@ -180,3 +185,25 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=2, separators=(',', ': ')))
+
+# Helper functions
+class Helper():
+
+    def get_coffee():
+        import os
+
+        # Supported packages
+        packages = ["Better CoffeeScript", "CoffeeScript"]
+
+        # Iterate over packages installed with Package Control
+        for package in packages:
+            if os.path.isfile(sublime.installed_packages_path() + "/" + package + ".sublime-package") is True:
+                return "Packages/" + package + "/CoffeeScript.tmLanguage"
+
+        # Still found nothing, let's iterate over manually installed packages  
+        for package in packages:
+            if os.path.isdir(sublime.packages_path() + "/" + package) is True:
+                return "Packages/" + package + "/CoffeeScript.tmLanguage"
+
+        sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
+        return False
