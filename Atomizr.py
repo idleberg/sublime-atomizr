@@ -89,7 +89,6 @@ class SublSnipToAtomCommand(sublime_plugin.TextCommand):
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
 
-        # xmltodict.parse(selection)
         # interprete and validate data
         try:
             xml = xmltodict.parse(selection)
