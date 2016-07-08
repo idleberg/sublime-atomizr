@@ -166,26 +166,6 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
-# Converts Atom snippets (CSON into JSON)
-class AtomToAtomCommand(sublime_plugin.TextCommand):
-
-    def run(self, edit):
-        import cson, json
-
-        # read data from view
-        selection = self.view.substr(sublime.Region(0, self.view.size()))
-
-        # interprete and validate data
-        try:
-            data = cson.loads(selection)
-        except:
-            sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
-            return
-
-        # write converted data to view
-        selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=2, separators=(',', ': ')))
-
 # Helper functions
 class Helper():
 
