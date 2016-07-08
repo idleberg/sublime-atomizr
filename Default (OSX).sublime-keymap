@@ -16,5 +16,11 @@
       "ctrl+s", "ctrl+a"
     ],
     "command": "subl_to_atom"
+  },
+  {
+    "keys": [
+      "ctrl+a", "ctrl+a"
+    ],
+    "command": "atom_to_atom"
   }
 ]

@@ -166,6 +166,72 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
+# Convert Atom format
+class AtomToAtomCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        scope = self.view.scope_name(self.view.sel()[0].a)
+
+        if "source.json" in scope: 
+            print("Atomizr: JSON detected, trying to convert to CSON")
+            self.view.run_command('atom_json_to_cson')
+        elif "source.coffee" in scope:
+            print("Atomizr: CSON detected, trying to convert to JSON")
+            self.view.run_command('atom_cson_to_json')
+        else:
+            sublime.error_message("Atomizr: Unsupported scope, aborting")
+
+# Converts Atom snippets (CSON into JSON)
+class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import cson, json
+
+        # read data from view
+        selection = self.view.substr(sublime.Region(0, self.view.size()))
+
+        # interprete and validate data
+        try:
+            data = cson.loads(selection)
+        except:
+            sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
+            return
+
+        # write converted data to view
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=2, separators=(',', ': ')))
+
+        # set syntax to JSON
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
+
+# Converts Atom snippets (JSON into CSON)
+class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import cson, json
+
+        # read data from view
+        selection = self.view.substr(sublime.Region(0, self.view.size()))
+
+        # interprete and validate data
+        try:
+            data = json.loads(selection)
+        except:
+            sublime.error_message("Atomizr: Invalid JSON, aborting conversion")
+            return
+
+        # write converted data to view
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, cson.dumps(data, sort_keys=False, indent=2))
+
+        # set syntax to CSON, requires Better CoffeeScript package
+        package = Helper.get_coffee()
+        if package is not False:
+            self.view.set_syntax_file(package)
+
 # Helper functions
 class Helper():
 
