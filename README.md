@@ -15,7 +15,7 @@ This package is also available for [Atom](https://github.com/idleberg/atom-atomi
 1. Make sure you already have [Package Control](https://packagecontrol.io/) installed
 2. Choose *“Install Package”* from the Command Palette (<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd>)
 3. Type *“Atomizr”* and press <kbd>Enter</kbd>
-4. Repeat steps 2 and 3 to install *“Better CoffeeScript”* (alternatively, use *“CoffeeScript”* or *“IcedCoffeeScript”*)
+4. Repeat steps 2 and 3 to install *“Better CoffeeScript”*
 
 With [auto_upgrade](http://wbond.net/sublime_packages/package_control/settings/) enabled, Package Control will keep all installed packages up-to-date!
 
@@ -33,7 +33,7 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Convert Atom to Sublime Text
 * Toggle Atom snippet format
 
-**Note:** Since automatic conversion is based on scope, make sure the a compatible CoffeeScript package (e.g. [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript)) is installed as well.
+**Note:** Since automatic conversion is based on scope, make sure the a supported CoffeeScript package is installed as well. Using [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) is recommended, though [CoffeeScript](https://packagecontrol.io/packages/CoffeeScript) and [IcedCoffeeScript](https://packagecontrol.io/packages/IcedCoffeeScript) are also supported.
 
 ### Keyboard Shortcuts
 
