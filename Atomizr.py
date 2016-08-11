@@ -27,14 +27,28 @@ class AutomizrCommand(sublime_plugin.TextCommand):
             self.view.run_command('atom_to_subl')
         elif "text.xml" in scope:
             print("Atomizr: XML detected, trying to convert")
-            self.view.run_command('subl_snip_to_atom')
+            self.view.run_command('subl_snippets_to_atom')
         elif "text.plain" in scope:
             sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
         else:
             sublime.error_message("Atomizr: Unsupported scope, aborting")
 
-# Converts Sublime Text completions into Atom snippets
+# Converts Sublime Text into Atom snippets
 class SublToAtomCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+
+        scope = self.view.scope_name(self.view.sel()[0].a)
+
+        if "source.json" in scope or "source.sublimecompletions" in scope: 
+            print("Atomizr: JSON detected, trying to convert")
+            self.view.run_command('subl_completions_to_atom')
+        elif "text.xml" in scope:
+            print("Atomizr: XML detected, trying to convert")
+            self.view.run_command('subl_snippets_to_atom')
+
+# Converts Sublime Text completions into Atom snippets
+class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import cson, json
@@ -67,8 +81,9 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
         array = {}
 
         for item in completions:
+            body = Helper.add_trailing_tabstop(item['contents'])
             try:
-                array[item['trigger']] = {'prefix': item['trigger'], 'body':  item['contents']}
+                array[item['trigger']] = {'prefix': item['trigger'], 'body':  body}
             except KeyError:
                 pass
 
@@ -84,7 +99,7 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
             self.view.set_syntax_file(package)
 
 # Converts Sublime Text completions into Atom snippets
-class SublSnipToAtomCommand(sublime_plugin.TextCommand):
+class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         import cson, xmltodict
@@ -109,6 +124,8 @@ class SublSnipToAtomCommand(sublime_plugin.TextCommand):
         except:
             description = prefix
 
+        body = Helper.add_trailing_tabstop(body)
+        
         atom = {scope: { description: { "prefix": prefix, "body": body} } }
 
         # write converted data to view
@@ -150,10 +167,13 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
                         scope = key.lstrip(".")
 
                 for item in (data[key]):
-                    completions.append( {"trigger": data[key][item]["prefix"], "contents": data[key][item]["body"]} )
+                    body = Helper.remove_trailing_tabstop(data[key][item]["body"])
+                    completions.append( {"trigger": data[key][item]["prefix"], "contents": body} )
         except:
             sublime.error_message("Atomizr: Not an Atom snippet file")
             return
+
+        
 
         subl = {"scope": scope, "completions": completions}
 
@@ -225,7 +245,7 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(data, sort_keys=False, indent=2))
+        self.view.replace(edit, selection, cson.dumps(data, sort_keys=True, indent=2))
 
         # set syntax to CSON, requires Better CoffeeScript package
         package = Helper.get_coffee()
@@ -234,6 +254,35 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
 
 # Helper functions
 class Helper():
+
+    def add_trailing_tabstop(input):
+        import re
+
+        m = re.search(r'\$\d+$', input)
+
+        if m is not None:
+            # nothing to do here
+            return input
+
+        stops = re.findall(r'\${?(\d+)', input)
+        if len(stops) > 0:
+            stops.sort()
+            highest = int(stops[-1]) + 1
+            return input + "$" + str(highest)
+
+        return input + "$1"
+
+    def remove_trailing_tabstop(input):
+        import re
+
+        m = re.search(r'\$\d+$', input)
+
+        if m is None:
+            # nothing to do here
+            return input
+
+        # remove tabstop
+        return re.sub(r'\$\d+$', "", input)
 
     def get_coffee():
         import os
@@ -250,7 +299,7 @@ class Helper():
             for package in packages:
                 if os.path.isfile(location + "/" + package + ".sublime-package") is True:
                     if package is "IcedCoffeeScript":
-                        return "Packages/" + package + "/Syntaxes/IcedCoffeeScript.tmLanguage"
+                        return "Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage"
                     else:
                         return "Packages/" + package + "/CoffeeScript.tmLanguage"
 
