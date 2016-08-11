@@ -4,12 +4,16 @@
         "command": "automizr"
     },
     {
-        "caption": "Atomizr: Convert Sublime Text to Atom (completions)",
+        "caption": "Atomizr: Convert Sublime Text to Atom",
         "command": "subl_to_atom"
     },
     {
         "caption": "Atomizr: Convert Sublime Text to Atom (snippet)",
-        "command": "subl_snip_to_atom"
+        "command": "subl_completions_to_atom"
+    },
+    {
+        "caption": "Atomizr: Convert Sublime Text to Atom (snippet)",
+        "command": "subl_snippets_to_atom"
     },
     {
         "caption": "Atomizr: Convert Atom to Sublime Text",
