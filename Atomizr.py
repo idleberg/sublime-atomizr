@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, sys
+import sublime, sublime_plugin, os, sys
 
 # Some Atom scopes are different from Sublime Text
 # https://gist.github.com/idleberg/fca633438329cc5ae327
@@ -81,9 +81,26 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
         array = {}
 
         for item in completions:
+
+            # Split tab-separated description
+            if "\t" in item['trigger']:
+                tabs = item['trigger'].split("\t")
+
+                if len(tabs) > 2:
+                    sublime.message_dialog("Atomizr: Conversion aborted, trigger contains multiple tabs.")
+                    print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
+                    return
+
+                trigger = tabs[0]
+                description = tabs[-1]
+            else:
+                trigger = item['trigger']
+                description = item['trigger']
+
             body = Helper.add_trailing_tabstop(item['contents'])
+
             try:
-                array[item['trigger']] = {'prefix': item['trigger'], 'body':  body}
+                array[description] = {'prefix': trigger, 'body':  body}
             except KeyError:
                 pass
 
@@ -167,13 +184,18 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
                         scope = key.lstrip(".")
 
                 for item in (data[key]):
+
+                    # Create tab-separated description
+                    if item != data[key][item]["prefix"]:
+                        trigger = data[key][item]["prefix"] + "\t" + item
+                    else:
+                        trigger = data[key][item]["prefix"]
+
                     body = Helper.remove_trailing_tabstop(data[key][item]["body"])
-                    completions.append( {"trigger": data[key][item]["prefix"], "contents": body} )
+                    completions.append( {"trigger": trigger, "contents": body} )
         except:
             sublime.error_message("Atomizr: Not an Atom snippet file")
             return
-
-        
 
         subl = {"scope": scope, "completions": completions}
 
