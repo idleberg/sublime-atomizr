@@ -8,7 +8,7 @@
         "command": "subl_to_atom"
     },
     {
-        "caption": "Atomizr: Convert Sublime Text to Atom (snippet)",
+        "caption": "Atomizr: Convert Sublime Text to Atom (completion)",
         "command": "subl_completions_to_atom"
     },
     {
