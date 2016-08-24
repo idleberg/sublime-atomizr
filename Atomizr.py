@@ -97,7 +97,7 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
                 trigger = item['trigger']
                 description = item['trigger']
 
-            body = Helper.add_trailing_tabstop(item['contents'])
+            body = add_trailing_tabstop(item['contents'])
 
             try:
                 array[description] = {'prefix': trigger, 'body':  body}
@@ -111,11 +111,11 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=4))
 
         # set syntax to CSON, requires Better CoffeeScript package
-        package = Helper.get_coffee()
+        package = get_coffee()
         if package is not False:
             self.view.set_syntax_file(package)
 
-        Helper.rename_file(self, "cson")
+        rename_file(self, "cson")
 
 # Converts Sublime Text completions into Atom snippets
 class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
@@ -143,7 +143,7 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
         except:
             description = prefix
 
-        body = Helper.add_trailing_tabstop(body)
+        body = add_trailing_tabstop(body)
         
         atom = {scope: { description: { "prefix": prefix, "body": body} } }
 
@@ -152,11 +152,11 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=2))
 
         # set syntax to CSON, requires Better CoffeeScript package
-        package = Helper.get_coffee()
+        package = get_coffee()
         if package is not False:
             self.view.set_syntax_file(package)
 
-        Helper.rename_file(self, "cson")
+        rename_file(self, "cson")
 
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
@@ -195,7 +195,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
                     else:
                         trigger = data[key][item]["prefix"]
 
-                    body = Helper.remove_trailing_tabstop(data[key][item]["body"])
+                    body = remove_trailing_tabstop(data[key][item]["body"])
                     completions.append( {"trigger": trigger, "contents": body} )
         except:
             sublime.error_message("Atomizr: Not an Atom snippet file")
@@ -206,15 +206,13 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=2, separators=(',', ': ')))
 
-        print(self.view.window().active_view().file_name() )
-
         # set syntax to JSON
         if sublime.version() >= "3103":
             self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
-        Helper.rename_file(self, "sublime-completions")
+        rename_file(self, "sublime-completions")
 
 # Convert Atom format
 class AtomToAtomCommand(sublime_plugin.TextCommand):
@@ -257,7 +255,7 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
-        Helper.rename_file(self, "json")
+        rename_file(self, "json")
 
 # Converts Atom snippets (JSON into CSON)
 class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
@@ -280,76 +278,80 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, cson.dumps(data, sort_keys=True, indent=2))
 
         # set syntax to CSON, requires Better CoffeeScript package
-        package = Helper.get_coffee()
+        package = get_coffee()
         if package is not False:
             self.view.set_syntax_file(package)
 
-        Helper.rename_file(self, "cson")
+        rename_file(self, "cson")
 
 # Helper functions
-class Helper(sublime_plugin.WindowCommand):
+def loadConfig():
+    return sublime.load_settings('Atomizr.sublime-settings');
 
-    def add_trailing_tabstop(input):
-        import re
+def rename_file(self, extension):
+    if loadConfig().get("renameFiles") != True:
+        return
 
-        m = re.search(r'\$\d+$', input)
+    import os
 
-        if m is not None:
-            # nothing to do here
-            return input
+    inputFile = self.view.window().active_view().file_name()
+    parentDir = os.path.dirname(inputFile)
+    baseName = os.path.splitext(os.path.basename(inputFile))[0]
+    fileName = baseName + "." + extension
+    outputFile = os.path.join(parentDir, fileName)
+    os.rename(inputFile, outputFile)
+    
+    self.view.set_name(fileName)
+    self.view.retarget(outputFile)
+    self.view.window().run_command("save")
 
-        stops = re.findall(r'\${?(\d+)', input)
-        if len(stops) > 0:
-            stops.sort()
-            highest = int(stops[-1]) + 1
-            return input + "$" + str(highest)
+def add_trailing_tabstop(input):
+    import re
 
-        return input + "$1"
+    m = re.search(r'\$\d+$', input)
 
-    def remove_trailing_tabstop(input):
-        import re
+    if m is not None or loadConfig().get("addTrailingTabstops") == False:
+        # nothing to do here
+        return input
 
-        m = re.search(r'\$\d+$', input)
+    stops = re.findall(r'\${?(\d+)', input)
+    if len(stops) > 0:
+        stops.sort()
+        highest = int(stops[-1]) + 1
+        return input + "$" + str(highest)
 
-        if m is None:
-            # nothing to do here
-            return input
+    return input + "$1"
 
-        # remove tabstop
-        return re.sub(r'\$\d+$', "", input)
+def remove_trailing_tabstop(input):
+    import re
 
-    def rename_file(self, extension):
-        import os
+    m = re.search(r'\$\d+$', input)
 
-        inputFile = self.view.window().active_view().file_name()
-        parentDir = os.path.dirname(inputFile)
-        baseName = os.path.splitext(os.path.basename(inputFile))[0]
-        fileName = baseName + "." + extension
-        outputFile = os.path.join(parentDir, fileName)
-        os.rename(inputFile, outputFile)
-        
-        self.view.set_name(fileName)
-        self.view.retarget(outputFile)
-        self.view.window().run_command("save")
+    if m is None or loadConfig().get("removeTrailingTabstops") == False:
+        # nothing to do here
+        return input
 
-    def get_coffee():
-        import os
+    # remove tabstop
+    return re.sub(r'\$\d+$', "", input)
 
-        # package locations
-        locations = [sublime.installed_packages_path(), sublime.packages_path()]
+def get_coffee():
+    import os
 
-        # supported packages
-        packages = ["Better CoffeeScript", "CoffeeScript", "IcedCoffeeScript"]
+    # package locations
+    locations = [sublime.installed_packages_path(), sublime.packages_path()]
 
-        # iterate over packages locations
-        for location in locations:
-            # iterate over packages installed with Package Control
-            for package in packages:
-                if os.path.isfile(location + "/" + package + ".sublime-package") is True:
-                    if package is "IcedCoffeeScript":
-                        return "Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage"
-                    else:
-                        return "Packages/" + package + "/CoffeeScript.tmLanguage"
+    # supported packages
+    packages = ["Better CoffeeScript", "CoffeeScript", "IcedCoffeeScript"]
 
-        sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
-        return False
+    # iterate over packages locations
+    for location in locations:
+        # iterate over packages installed with Package Control
+        for package in packages:
+            if os.path.isfile(location + "/" + package + ".sublime-package") is True:
+                if package is "IcedCoffeeScript":
+                    return "Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage"
+                else:
+                    return "Packages/" + package + "/CoffeeScript.tmLanguage"
+
+    sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
+    return False

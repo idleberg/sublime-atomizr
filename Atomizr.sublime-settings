@@ -1,0 +1,12 @@
+{
+    // Renames files after conversion, improves file syntax detection
+    "renameFiles": true,
+
+    // Adds trailing tab-stops to created Atom snippets. Since you can't
+    // tab-stop past the snippet, this is recommended.
+    "addTrailingTabstops": true,
+
+    // Unlike Atom snippets, Sublime completions/snippet don't need a trailing
+    // tab-stop to jump past the snippet. Hence, we can remove it!
+    "removeTrailingTabstops": true
+}
