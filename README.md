@@ -6,7 +6,7 @@
 
 Convert Sublime Text completions into Atom snippets, and vice versa.
 
-Also available for [Atom](https://github.com/idleberg/atom-atomizr) and for the [command line](https://github.com/idleberg/ruby-atomizr).
+Also available for [Atom](https://github.com/idleberg/atom-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr).
 
 ## Installation
 
