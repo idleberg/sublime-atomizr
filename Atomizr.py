@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, os, sys
+import sublime, sublime_plugin, sys
 
 # Some Atom scopes are different from Sublime Text
 # https://gist.github.com/idleberg/fca633438329cc5ae327
@@ -115,6 +115,8 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
         if package is not False:
             self.view.set_syntax_file(package)
 
+        Helper.rename_file(self, "cson")
+
 # Converts Sublime Text completions into Atom snippets
 class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
 
@@ -153,6 +155,8 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
         package = Helper.get_coffee()
         if package is not False:
             self.view.set_syntax_file(package)
+
+        Helper.rename_file(self, "cson")
 
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
@@ -202,11 +206,15 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=2, separators=(',', ': ')))
 
+        print(self.view.window().active_view().file_name() )
+
         # set syntax to JSON
         if sublime.version() >= "3103":
             self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
+
+        Helper.rename_file(self, "sublime-completions")
 
 # Convert Atom format
 class AtomToAtomCommand(sublime_plugin.TextCommand):
@@ -249,6 +257,8 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
+        Helper.rename_file(self, "json")
+
 # Converts Atom snippets (JSON into CSON)
 class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
 
@@ -274,8 +284,10 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
         if package is not False:
             self.view.set_syntax_file(package)
 
+        Helper.rename_file(self, "cson")
+
 # Helper functions
-class Helper():
+class Helper(sublime_plugin.WindowCommand):
 
     def add_trailing_tabstop(input):
         import re
@@ -305,6 +317,20 @@ class Helper():
 
         # remove tabstop
         return re.sub(r'\$\d+$', "", input)
+
+    def rename_file(self, extension):
+        import os
+
+        inputFile = self.view.window().active_view().file_name()
+        parentDir = os.path.dirname(inputFile)
+        baseName = os.path.splitext(os.path.basename(inputFile))[0]
+        fileName = baseName + "." + extension
+        outputFile = os.path.join(parentDir, fileName)
+        os.rename(inputFile, outputFile)
+        
+        self.view.set_name(fileName)
+        self.view.retarget(outputFile)
+        self.view.window().run_command("save")
 
     def get_coffee():
         import os
