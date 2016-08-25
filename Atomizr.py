@@ -12,6 +12,9 @@ SCOPES = [
     [ "source.markdown", ".source.gfm" ]
 ]
 
+SUBL_GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
+ATOM_GENERATOR = "# %s\n" % SUBL_GENERATOR
+
 # Automatic conversion, based on scope
 class AutomizrCommand(sublime_plugin.TextCommand):
 
@@ -106,9 +109,12 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
 
         atom = {scope: (array)}
 
+        sort_keys = loadConfig().get("csonSortKeys") or True
+        indent = loadConfig().get("csonIndent") or 2
+
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=4))
+        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(atom, sort_keys=sort_keys, indent=indent))
 
         # set syntax to CSON, requires Better CoffeeScript package
         package = get_coffee()
@@ -147,9 +153,12 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
         
         atom = {scope: { description: { "prefix": prefix, "body": body} } }
 
+        sort_keys = loadConfig().get("csonSortKeys") or True
+        indent = loadConfig().get("csonIndent") or 2
+
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(atom, sort_keys=True, indent=2))
+        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(atom, sort_keys=sort_keys, indent=indent))
 
         # set syntax to CSON, requires Better CoffeeScript package
         package = get_coffee()
@@ -201,10 +210,13 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr: Not an Atom snippet file")
             return
 
-        subl = {"scope": scope, "completions": completions}
+        subl = {"#": SUBL_GENERATOR, "scope": scope, "completions": completions}
+
+        sort_keys = loadConfig().get("jsonSortKeys") or False
+        indent = loadConfig().get("jsonIndent") or 2
 
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(subl, sort_keys=False, indent=2, separators=(',', ': ')))
+        self.view.replace(edit, selection, json.dumps(subl, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
         if sublime.version() >= "3103":
@@ -245,9 +257,12 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
             return
 
+        sort_keys = loadConfig().get("jsonSortKeys") or False
+        indent = loadConfig().get("jsonIndent") or 2
+
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(data, sort_keys=False, indent=2, separators=(',', ': ')))
+        self.view.replace(edit, selection, json.dumps(data, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
         if sublime.version() >= "3103":
@@ -273,9 +288,12 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr: Invalid JSON, aborting conversion")
             return
 
+        sort_keys = loadConfig().get("csonSortKeys") or True
+        indent = loadConfig().get("csonIndent") or 2
+
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(data, sort_keys=True, indent=2))
+        self.view.replace(edit, selection, cson.dumps(data, sort_keys=sort_keys, indent=indent))
 
         # set syntax to CSON, requires Better CoffeeScript package
         package = get_coffee()

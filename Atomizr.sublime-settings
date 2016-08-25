@@ -8,5 +8,13 @@
 
     // Unlike Atom snippets, Sublime completions/snippet don't need a trailing
     // tab-stop to jump past the snippet. Hence, we can remove it!
-    "removeTrailingTabstops": true
+    "removeTrailingTabstops": true,
+
+    // CSON Options
+    "csonSortKeys": true,
+    "csonIndent": 2,
+
+    // JSON Options
+    "jsonSortKeys": false,
+    "jsonIndent": 2
 }
