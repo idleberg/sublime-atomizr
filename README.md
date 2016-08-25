@@ -53,9 +53,9 @@ Some of the default conversion settings can be modified from the *Package Settin
 
 * Rename target files (`boolean`)
 * Add or remove trailing tab-stops (`boolean`)
-* indentation level (`int`)
-* sort keys (`boolean`)
-* scope replacement rules (`array`)
+* Indentation level (`int`)
+* Sort keys (`boolean`)
+* Scope replacement rules (`array`)
 
 # License
 
