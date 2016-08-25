@@ -16,5 +16,18 @@
 
     // JSON Options
     "jsonSortKeys": false,
-    "jsonIndent": 2
+    "jsonIndent": 2,
+
+    // Syntax scopes in Sublime Text and Atom don't always match, here you can
+    // add your own rules or edit the existing ones.
+    // More info at https://gist.github.com/idleberg/fca633438329cc5ae327
+    "scopeReplacements": [
+        [ "source.c++", ".source.cpp" ],
+        [ "source.java-props", ".source.java-properties" ],
+        [ "source.objc++", ".source.objcpp" ],
+        [ "source.php", ".source.html.php" ],
+        [ "source.scss", ".source.css.scss" ],
+        [ "source.todo", ".text.todo" ],
+        [ "source.markdown", ".source.gfm" ]
+    ]
 }

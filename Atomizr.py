@@ -1,17 +1,5 @@
 import sublime, sublime_plugin, sys
 
-# Some Atom scopes are different from Sublime Text
-# https://gist.github.com/idleberg/fca633438329cc5ae327
-SCOPES = [
-    [ "source.c++", ".source.cpp" ],
-    [ "source.java-props", ".source.java-properties" ],
-    [ "source.objc++", ".source.objcpp" ],
-    [ "source.php", ".source.html.php" ],
-    [ "source.scss", ".source.css.scss" ],
-    [ "source.todo", ".text.todo" ],
-    [ "source.markdown", ".source.gfm" ]
-]
-
 SUBL_GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
 ATOM_GENERATOR = "# %s\n" % SUBL_GENERATOR
 
@@ -66,10 +54,12 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr: Invalid JSON")
             return
 
+        scope_replacements = loadConfig().get("scopeReplacements") or True
+
         # but is it a Sublime Text completion?
         try:
             # get scope, convert if necessary
-            for subl, atom in SCOPES:
+            for subl, atom in scope_replacements:
                 if data['scope'] == subl:
                     scope = atom
                     break
@@ -184,12 +174,13 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
             return
 
         completions = []
+        scope_replacements = loadConfig().get("scopeReplacements") or True
 
         # but is it an Atom snippet?
         try:
             # get scope, convert if necessary
             for key in data.keys():
-                for subl, atom in SCOPES:
+                for subl, atom in scope_replacements:
                     if key == atom:
                         scope = subl
                         break

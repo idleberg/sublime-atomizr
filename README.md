@@ -47,6 +47,16 @@ Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd
 
 For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. To toggle the Atom snippet format (CSON↔JSON), press <kbd>Ctrl</kbd>+<kbd>A</kbd> twice.
 
+### Settings
+
+Some of the default conversion settings can be modified from the *Package Settings* menu:
+
+* Rename target files (`boolean`)
+* Add or remove trailing tab-stops (`boolean`)
+* indentation level (`int`)
+* sort keys (`boolean`)
+* scope replacement rules (`array`)
+
 # License
 
 This work is licensed under the [The MIT License](LICENSE).
