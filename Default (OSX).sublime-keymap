@@ -3,24 +3,52 @@
     "keys": [
       "ctrl+c", "ctrl+c"
     ],
-    "command": "automizr"
+    "command": "automizr",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.coffee, source.json, text.xml"
+      }
+    ]
   },
   {
     "keys": [
       "ctrl+a", "ctrl+s"
     ],
-    "command": "atom_to_subl"
+    "command": "atom_to_subl",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.coffee"
+      }
+    ]
   },
   {
     "keys": [
       "ctrl+s", "ctrl+a"
     ],
-    "command": "subl_to_atom"
+    "command": "subl_to_atom",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.json, text.xml"
+      }
+    ]
   },
   {
     "keys": [
       "ctrl+a", "ctrl+a"
     ],
-    "command": "atom_to_atom"
+    "command": "atom_to_atom",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.coffee, source.json"
+      }
+    ]
   }
 ]
