@@ -32,13 +32,6 @@
               {
                 "command": "open_file",
                 "args": {
-                  "file": "${packages}/Atomizr/Default.sublime-keymap",
-                },
-                "caption": "Key Bindings – Default"
-              },
-              {
-                "command": "open_file",
-                "args": {
                   "file": "${packages}/Atomizr/Default (OSX).sublime-keymap",
                   "platform": "OSX"
                 },
@@ -47,7 +40,7 @@
               {
                 "command": "open_file",
                 "args": {
-                  "file": "${packages}/User/Default (Linux).sublime-keymap",
+                  "file": "${packages}/User/Default.sublime-keymap",
                   "platform": "Linux"
                 },
                 "caption": "Key Bindings – User"
@@ -63,7 +56,7 @@
               {
                 "command": "open_file",
                 "args": {
-                  "file": "${packages}/User/Default (Windows).sublime-keymap",
+                  "file": "${packages}/User/Default.sublime-keymap",
                   "platform": "Windows"
                 },
                 "caption": "Key Bindings – User"
