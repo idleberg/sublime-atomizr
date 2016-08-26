@@ -91,6 +91,9 @@
                 "command": "automizr"
               },
               {
+                "caption": "-"
+              },
+              {
                 "caption": "Convert Atom to Sublime Text",
                 "command": "atom_to_subl"
               },
@@ -101,6 +104,9 @@
               {
                 "caption": "Toggle Atom snippet format",
                 "command": "atom_to_atom"
+              },
+              {
+                "caption": "-"
               },
               {
                 "caption": "Convert Sublime Text to Atom (completions)",
