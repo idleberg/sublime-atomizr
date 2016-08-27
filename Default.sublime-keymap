@@ -21,7 +21,7 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand": "source.coffee"
+        "operand": "source.coffee, source.json"
       }
     ]
   },
@@ -34,7 +34,7 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand": "source.json, text.xml"
+        "operand": "source.coffee, source.json, text.xml"
       }
     ]
   },
