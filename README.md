@@ -3,6 +3,7 @@
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Package Control](https://packagecontrol.herokuapp.com/downloads/Atomizr.svg?style=flat-square)](https://packagecontrol.io/packages/Atomizr)
 [![GitHub release](https://img.shields.io/github/release/idleberg/sublime-atomizr.svg?style=flat-square)](https://github.com/idleberg/sublime-atomizr/releases)
+[![Travis](https://img.shields.io/travis/idleberg/sublime-atomizr.svg?style=flat-square)](https://travis-ci.org/idleberg/sublime-atomizr)
 
 Convert Sublime Text completions into Atom snippets, and vice versa.
 
