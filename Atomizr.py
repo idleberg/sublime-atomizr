@@ -20,9 +20,9 @@ class AutomizrCommand(sublime_plugin.TextCommand):
             print("Atomizr: XML detected, trying to convert")
             self.view.run_command('subl_snippets_to_atom')
         elif "text.plain" in scope:
-            sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
+            sublime.error_message("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
         else:
-            sublime.error_message("Atomizr: Unsupported scope, aborting")
+            sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
 
 # Converts Sublime Text into Atom snippets
 class SublToAtomCommand(sublime_plugin.TextCommand):
@@ -51,7 +51,7 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
         try:
             data = json.loads(selection)
         except ValueError:
-            sublime.error_message("Atomizr: Invalid JSON")
+            sublime.error_message("Atomizr\n\nInvalid JSON")
             return
 
         scope_replacements = loadConfig().get("scopeReplacements") or True
@@ -68,7 +68,7 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
 
             completions = data['completions']
         except:
-            sublime.error_message("Atomizr: Not a Sublime Text completions file")
+            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
             return
 
         array = {}
@@ -126,7 +126,7 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
         try:
             xml = xmltodict.parse(selection)
         except:
-            sublime.error_message("Atomizr: Invalid XML, aborting conversion")
+            sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
             return
 
         body = xml['snippet']['content']
@@ -170,7 +170,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         try:
             data = cson.loads(selection)
         except:
-            sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
+            sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
             return
 
         completions = []
@@ -198,7 +198,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
                     body = remove_trailing_tabstop(data[key][item]["body"])
                     completions.append( {"trigger": trigger, "contents": body} )
         except:
-            sublime.error_message("Atomizr: Not an Atom snippet file")
+            sublime.error_message("Atomizr\n\nNot an Atom snippet file")
             return
 
         subl = {"#": SUBL_GENERATOR, "scope": scope, "completions": completions}
@@ -230,7 +230,7 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
             print("Atomizr: CSON detected, trying to convert to JSON")
             self.view.run_command('atom_cson_to_json')
         else:
-            sublime.error_message("Atomizr: Unsupported scope, aborting")
+            sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
 
 # Converts Atom snippets (CSON into JSON)
 class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
@@ -245,7 +245,7 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
         try:
             data = cson.loads(selection)
         except:
-            sublime.error_message("Atomizr: Invalid CSON, aborting conversion")
+            sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
             return
 
         sort_keys = loadConfig().get("jsonSortKeys") or False
@@ -276,7 +276,7 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
         try:
             data = json.loads(selection)
         except:
-            sublime.error_message("Atomizr: Invalid JSON, aborting conversion")
+            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
             return
 
         sort_keys = loadConfig().get("csonSortKeys") or True
@@ -362,5 +362,5 @@ def get_coffee():
                 else:
                     return "Packages/" + package + "/CoffeeScript.tmLanguage"
 
-    sublime.error_message("Atomizr: Automatic conversion requires a supported CoffeeScript package to be installed")
+    sublime.error_message("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
     return False
