@@ -34,13 +34,11 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
         if "source.json" in scope or "source.sublimecompletions" in scope: 
             print("Atomizr: JSON detected, trying to convert")
             self.view.run_command('subl_completions_to_atom')
-            return
         elif "text.xml" in scope:
             print("Atomizr: XML detected, trying to convert")
             self.view.run_command('subl_snippets_to_atom')
-            return
-
-        sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
+        else:
+            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
 
 # Converts Sublime Text completions into Atom snippets
 class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
