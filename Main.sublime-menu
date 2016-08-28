@@ -1,8 +1,57 @@
 [
   {
+    "caption": "Tools",
+    "id": "tools",
+    "mnemonic": "t",
+    "children": [
+      {
+        "id": "packages",
+        "caption": "Packages",
+        "children": [
+          {
+            "id": "atomizr",
+            "caption": "Atomizr",
+            "children": [
+              {
+                "caption": "Automatic conversion",
+                "command": "automizr"
+              },
+              {
+                "caption": "-"
+              },
+              {
+                "caption": "Convert Atom to Sublime Text",
+                "command": "atom_to_subl"
+              },
+              {
+                "caption": "Convert Sublime Text to Atom",
+                "command": "subl_to_atom"
+              },
+              {
+                "caption": "Toggle Atom snippet format",
+                "command": "atom_to_atom"
+              },
+              {
+                "caption": "-"
+              },
+              {
+                "caption": "Convert Sublime Text to Atom (completions)",
+                "command": "subl_completions_to_atom"
+              },
+              {
+                "caption": "Convert Sublime Text to Atom (snippet)",
+                "command": "subl_snippets_to_atom"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+    {
     "caption": "Preferences",
-    "mnemonic": "n",
     "id": "preferences",
+    "mnemonic": "n",
     "children": [
       {
         "caption": "Package Settings",
@@ -60,54 +109,6 @@
                   "platform": "Windows"
                 },
                 "caption": "Key Bindings – User"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "tools",
-    "caption": "Tools",
-    "children": [
-      {
-        "id": "packages",
-        "caption": "Packages",
-        "children": [
-          {
-            "id": "atomizr",
-            "caption": "Atomizr",
-            "children": [
-              {
-                "caption": "Automatic conversion",
-                "command": "automizr"
-              },
-              {
-                "caption": "-"
-              },
-              {
-                "caption": "Convert Atom to Sublime Text",
-                "command": "atom_to_subl"
-              },
-              {
-                "caption": "Convert Sublime Text to Atom",
-                "command": "subl_to_atom"
-              },
-              {
-                "caption": "Toggle Atom snippet format",
-                "command": "atom_to_atom"
-              },
-              {
-                "caption": "-"
-              },
-              {
-                "caption": "Convert Sublime Text to Atom (completions)",
-                "command": "subl_completions_to_atom"
-              },
-              {
-                "caption": "Convert Sublime Text to Atom (snippet)",
-                "command": "subl_snippets_to_atom"
               }
             ]
           }
