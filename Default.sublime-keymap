@@ -50,5 +50,18 @@
         "operand": "source.coffee, source.json"
       }
     ]
+  },
+  {
+    "keys": [
+      "ctrl+s", "ctrl+s"
+    ],
+    "command": "subl_to_subl",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.json, text.xml"
+      }
+    ]
   }
 ]

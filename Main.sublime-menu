@@ -28,7 +28,7 @@
                 "command": "subl_to_atom"
               },
               {
-                "caption": "Toggle Atom snippet format",
+                "caption": "Toggle Atom format",
                 "command": "atom_to_atom"
               },
               {
@@ -41,6 +41,10 @@
               {
                 "caption": "Convert Sublime Text to Atom (snippet)",
                 "command": "subl_snippets_to_atom"
+              },
+              {
+                "caption": "Toggle Sublime Text format",
+                "command": "subl_to_subl"
               }
             ]
           }

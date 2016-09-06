@@ -33,7 +33,8 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Convert Atom to Sublime Text
 * Convert Sublime Text completions to Atom
 * Convert Sublime Text snippet to Atom
-* Toggle Atom snippet format
+* Toggle Atom format (CSON⟷JSON)
+* Toggle Sublime Text format (XML⟷JSON)
 
 **Note:** Since automatic conversion is based on scope, make sure the a supported CoffeeScript package is installed as well. Using [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) is recommended, though [CoffeeScript](https://packagecontrol.io/packages/CoffeeScript) and [IcedCoffeeScript](https://packagecontrol.io/packages/IcedCoffeeScript) are also supported.
 
@@ -46,7 +47,7 @@ Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd
 * Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 * Atom to Sublime Text (A to S): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
-For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. To toggle the Atom snippet format (CSON↔JSON), press <kbd>Ctrl</kbd>+<kbd>A</kbd> twice.
+For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice.
 
 ### Settings
 

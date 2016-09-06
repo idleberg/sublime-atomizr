@@ -20,7 +20,11 @@
         "command": "atom_to_subl"
     },
     {
-        "caption": "Atomizr: Toggle Atom snippet format",
+        "caption": "Atomizr: Toggle Atom format",
         "command": "atom_to_atom"
+    },
+    {
+        "caption": "Atomizr: Toggle Sublime Text format",
+        "command": "subl_to_subl"
     }
 ]
