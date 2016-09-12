@@ -117,7 +117,6 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
 
 # Converts Sublime Text completions into Atom snippets
 class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
-
     def run(self, edit):
         import cson, xmltodict
 
@@ -234,6 +233,78 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
         else:
             sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
 
+# Converts Sublime Text snippets into Sublime Text completions
+class SublJsonToXml(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import dicttoxml, json
+
+        # read data from view
+        selection = self.view.substr(sublime.Region(0, self.view.size()))
+
+        # interprete and validate data
+        try:
+            data = json.loads(selection)
+        except:
+            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
+            return
+
+        xml_snippet = dicttoxml.dicttoxml(data, root=False)
+
+        print(xml_snippet)
+
+# Converts Sublime Text snippets into Sublime Text completions
+class SublXmlToJson(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import json, xmltodict
+
+        # read data from view
+        selection = self.view.substr(sublime.Region(0, self.view.size()))
+
+        # interprete and validate data
+        try:
+            xml = xmltodict.parse(selection)
+        except:
+            sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
+            return
+
+        contents = xml['snippet']['content']
+        scope = xml['snippet']['scope']
+        trigger = xml['snippet']['tabTrigger']
+
+        # <description> is optional
+        try:
+            xml['snippet']['description']
+        except:
+            description = trigger
+
+        contents = add_trailing_tabstop(contents)
+        
+        subl = {
+            "#": SUBL_GENERATOR,
+            "scope": scope,
+            "completions": {
+                "trigger": trigger,
+                "contents": contents
+            }
+        }
+
+        sort_keys = loadConfig().get("jsonSortKeys") or True
+        indent = loadConfig().get("jsonIndent") or 2
+
+        # write converted data to view
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, json.dumps(subl, sort_keys=sort_keys, indent=indent))
+
+        # set syntax to JSON
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
+
+        rename_file(self, "json")
+
 # Converts Atom snippets (CSON into JSON)
 class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
 
@@ -295,6 +366,21 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
 
         rename_file(self, "cson")
 
+# Convert Atom format
+class SublToSublCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        scope = self.view.scope_name(self.view.sel()[0].a)
+
+        if "source.json" in scope: 
+            print("Atomizr: JSON detected, trying to convert to XML")
+            self.view.run_command('subl_json_to_xml')
+        elif "text.xml" in scope:
+            print("Atomizr: XML detected, trying to convert to JSON")
+            self.view.run_command('subl_xml_to_json')
+        else:
+            sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
+
 # Helper functions
 def loadConfig():
     return sublime.load_settings('Atomizr.sublime-settings');
@@ -352,7 +438,7 @@ def get_coffee():
     locations = [sublime.installed_packages_path(), sublime.packages_path()]
 
     # supported packages
-    packages = ["Better CoffeeScript", "CoffeeScript", "IcedCoffeeScript"]
+    packages = ["Better CoffeeScript", "CoffeeScript", "IcedCoffeeScript", "Mongoose CoffeeScript"]
 
     # iterate over packages locations
     for location in locations:
@@ -361,6 +447,8 @@ def get_coffee():
             if os.path.isfile(location + "/" + package + ".sublime-package") is True:
                 if package is "IcedCoffeeScript":
                     return "Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage"
+                elif package is "Mongoose CoffeeScript":
+                    return "Packages/Mongoose CoffeeScript/CoffeeScript.tmLanguage"
                 else:
                     return "Packages/" + package + "/CoffeeScript.tmLanguage"
 
