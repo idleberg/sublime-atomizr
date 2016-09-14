@@ -260,8 +260,21 @@ class SublJsonToXml(sublime_plugin.TextCommand):
         content = etree.SubElement(root, "content")
         content.text = etree.CDATA(completions["contents"])
         tabTrigger = etree.SubElement(root, "tabTrigger")
-        tabTrigger.text = completions["trigger"]
-        description = etree.SubElement(root, "description")
+
+        if "\t" in completions['trigger']:
+            tabs = completions['trigger'].split("\t")
+
+            if len(tabs) > 2:
+                sublime.message_dialog("Atomizr: Conversion aborted, trigger contains multiple tabs.")
+                print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
+                return
+
+            tabTrigger.text = tabs[0]
+            description = etree.SubElement(root, "description")
+            description.text = tabs[-1]
+        else:
+            tabTrigger.text = completions['trigger']
+
         scope = etree.SubElement(root, "scope")
         scope.text = data["scope"]
 
@@ -300,12 +313,13 @@ class SublXmlToJson(sublime_plugin.TextCommand):
 
         # <description> is optional
         try:
-            xml['snippet']['description']
+            description = xml['snippet']['description']
+            trigger = trigger + "\t" + description
         except:
-            description = trigger
+            pass
 
         contents = add_trailing_tabstop(contents)
-        
+
         subl = {
             "#": SUBL_GENERATOR,
             "scope": scope,
