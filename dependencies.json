@@ -1,7 +1,7 @@
 {
    "*": {
       "*": [
-         "cson", "dicttoxml", "speg", "xmltodict"
+         "cson", "lxml", "speg", "xmltodict"
       ]
    }
 }
