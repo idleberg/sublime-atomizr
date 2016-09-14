@@ -2,6 +2,7 @@ import sublime, sublime_plugin, sys
 
 SUBL_GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
 ATOM_GENERATOR = "# %s\n" % SUBL_GENERATOR
+XML_GENERATOR = "<!-- %s -->\n" % SUBL_GENERATOR
 
 # Automatic conversion, based on scope
 class AutomizrCommand(sublime_plugin.TextCommand):
@@ -237,7 +238,8 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
 class SublJsonToXml(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        import dicttoxml, json
+        import json
+        from lxml import etree
 
         # read data from view
         selection = self.view.substr(sublime.Region(0, self.view.size()))
@@ -249,9 +251,32 @@ class SublJsonToXml(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
             return
 
-        xml_snippet = dicttoxml.dicttoxml(data, root=False)
+        if len(data["completions"]) > 2:
+            completions = data["completions"][0]
+        else:
+            completions = data["completions"]
 
-        print(xml_snippet)
+        root = etree.Element("snippet")
+        content = etree.SubElement(root, "content")
+        content.text = etree.CDATA(completions["contents"])
+        tabTrigger = etree.SubElement(root, "tabTrigger")
+        tabTrigger.text = completions["trigger"]
+        description = etree.SubElement(root, "description")
+        scope = etree.SubElement(root, "scope")
+        scope.text = data["scope"]
+
+        xmlString = etree.tostring(root, pretty_print=True, encoding="utf-8").decode('utf-8')
+
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, XML_GENERATOR + xmlString)
+
+        # set syntax to XML
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/XML/XML.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/XML/XML.tmLanguage')
+
+        rename_file(self, "sublime-snippet")
 
 # Converts Sublime Text snippets into Sublime Text completions
 class SublXmlToJson(sublime_plugin.TextCommand):
@@ -303,7 +328,7 @@ class SublXmlToJson(sublime_plugin.TextCommand):
         else:
             self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
-        rename_file(self, "json")
+        rename_file(self, "sublime-completions")
 
 # Converts Atom snippets (CSON into JSON)
 class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
@@ -372,7 +397,7 @@ class SublToSublCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         scope = self.view.scope_name(self.view.sel()[0].a)
 
-        if "source.json" in scope: 
+        if "source.json" in scope or "source.sublimecompletions" in scope:
             print("Atomizr: JSON detected, trying to convert to XML")
             self.view.run_command('subl_json_to_xml')
         elif "text.xml" in scope:
