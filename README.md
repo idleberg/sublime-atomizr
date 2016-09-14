@@ -46,6 +46,8 @@ Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd
 
 * Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 * Atom to Sublime Text (A to S): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+* Atom to Atom (A to A): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+* Sublime Text to Sublime Text (S to S): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
 For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice.
 
