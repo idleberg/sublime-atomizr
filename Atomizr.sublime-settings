@@ -15,7 +15,7 @@
     "csonIndent": 2,
 
     // JSON Options
-    "jsonSortKeys": false,
+    "jsonSortKeys": true,
     "jsonIndent": 2,
 
     // Syntax scopes in Sublime Text and Atom don't always match, here you can
