@@ -251,10 +251,7 @@ class SublJsonToXml(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
             return
 
-        if len(data["completions"]) > 2:
-            completions = data["completions"][0]
-        else:
-            completions = data["completions"]
+        completions = data["completions"][0]
 
         root = etree.Element("snippet")
         content = etree.SubElement(root, "content")
@@ -323,10 +320,13 @@ class SublXmlToJson(sublime_plugin.TextCommand):
         subl = {
             "#": SUBL_GENERATOR,
             "scope": scope,
-            "completions": {
-                "trigger": trigger,
-                "contents": contents
-            }
+            "completions": [
+                {
+                    "trigger": trigger,
+                    "contents": contents
+                }
+                
+            ]
         }
 
         sort_keys = loadConfig().get("jsonSortKeys") or True
@@ -422,7 +422,13 @@ class SublToSublCommand(sublime_plugin.TextCommand):
 
 # Helper functions
 def loadConfig():
-    return sublime.load_settings('Atomizr.sublime-settings');
+    return sublime.load_settings('Atomizr.sublime-settings')
+
+def isIgnored(package):
+    settings = sublime.load_settings('Preferences.sublime-settings').get("ignored_packages")
+    if package in settings:
+        return True
+    return False
 
 def rename_file(self, extension):
     if loadConfig().get("renameFiles") != True:
@@ -483,6 +489,10 @@ def get_coffee():
     for location in locations:
         # iterate over packages installed with Package Control
         for package in packages:
+            # is "ignored_package"?
+            if isIgnored(package) == True:
+                continue
+
             if os.path.isfile(location + "/" + package + ".sublime-package") is True:
                 if package is "IcedCoffeeScript":
                     return "Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage"
