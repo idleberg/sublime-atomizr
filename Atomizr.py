@@ -239,7 +239,7 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
             return
 
-        sort_keys = loadConfig().get("jsonSortKeys") or False
+        sort_keys = loadConfig().get("jsonSortKeys") or True
         indent = loadConfig().get("jsonIndent") or 2
 
         # write converted data to view
