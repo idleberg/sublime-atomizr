@@ -29,7 +29,6 @@ class AutomizrCommand(sublime_plugin.TextCommand):
 class SublToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-
         scope = self.view.scope_name(self.view.sel()[0].a)
 
         if "source.json" in scope or "source.sublimecompletions" in scope: 
