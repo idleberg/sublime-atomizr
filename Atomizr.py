@@ -476,23 +476,13 @@ def write_subl_snippet(input):
     content = etree.SubElement(data, "content")
     content.text = etree.CDATA(input["completions"][0]["contents"])
     tabTrigger = etree.SubElement(data, "tabTrigger")
-
-    if "\t" in input["completions"][0]['trigger']:
-        tabs = input["completions"][0]['trigger'].split("\t")
-
-        if len(tabs) > 2:
-            sublime.message_dialog("Atomizr: Conversion aborted, trigger contains multiple tabs.")
-            print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
-            return False
-
-        tabTrigger.text = tabs[0]
-        description = etree.SubElement(data, "description")
-        description.text = tabs[-1]
-    else:
-        tabTrigger.text = input["completions"][0]['trigger']
-
+    tabTrigger.text = input["completions"][0]['trigger']
     scope = etree.SubElement(data, "scope")
     scope.text = input["scope"]
+
+    if input['completions'][0]['description']:
+        description = etree.SubElement(data, "description")
+        description.text = input["completions"][0]["description"]
 
     output = etree.tostring(data, pretty_print=True, encoding="utf-8").decode('utf-8')
 
