@@ -1,4 +1,4 @@
-import sublime, sublime_plugin, sys
+import sublime, sublime_plugin
 
 SUBL_GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
 ATOM_GENERATOR = "# %s\n" % SUBL_GENERATOR
@@ -48,66 +48,21 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
         import cson, json
 
         # read data from view
-        selection = self.view.substr(sublime.Region(0, self.view.size()))
+        input = self.view.substr(sublime.Region(0, self.view.size()))
 
-        # interprete and validate data
-        try:
-            data = json.loads(selection)
-        except ValueError:
-            sublime.error_message("Atomizr\n\nInvalid JSON")
+        data = read_subl_completions(input)
+        if data is False:
             return
 
-        scope_replacements = loadConfig().get("scopeReplacements") or True
+        output = write_atom_snippets(data)
 
-        # but is it a Sublime Text completion?
-        try:
-            # get scope, convert if necessary
-            for subl, atom in scope_replacements:
-                if data['scope'] == subl:
-                    scope = atom
-                    break
-                else:
-                    scope = "." + data['scope']
-
-            completions = data['completions']
-        except:
-            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
-            return
-
-        array = {}
-
-        for item in completions:
-
-            # Split tab-separated description
-            if "\t" in item['trigger']:
-                tabs = item['trigger'].split("\t")
-
-                if len(tabs) > 2:
-                    sublime.message_dialog("Atomizr: Conversion aborted, trigger contains multiple tabs.")
-                    print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
-                    return
-
-                trigger = tabs[0]
-                description = tabs[-1]
-            else:
-                trigger = item['trigger']
-                description = item['trigger']
-
-            body = add_trailing_tabstop(item['contents'])
-
-            try:
-                array[description] = {'prefix': trigger, 'body':  body}
-            except KeyError:
-                pass
-
-        atom = {scope: (array)}
-
+        # Get CSON settings
         sort_keys = loadConfig().get("csonSortKeys") or True
         indent = loadConfig().get("csonIndent") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(atom, sort_keys=sort_keys, indent=indent))
+        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to CSON, requires Better CoffeeScript package
         package = get_coffee()
@@ -121,36 +76,20 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         import cson, xmltodict
 
-        # read data from view
-        selection = self.view.substr(sublime.Region(0, self.view.size()))
-
-        # interprete and validate data
-        try:
-            xml = xmltodict.parse(selection)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
+        input = self.view.substr(sublime.Region(0, self.view.size()))
+        data = read_subl_snippet(input)
+        if data is False:
             return
 
-        body = xml['snippet']['content']
-        scope = xml['snippet']['scope']
-        prefix = xml['snippet']['tabTrigger']
+        output = write_atom_snippets(data)
 
-        # <description> is optional
-        try:
-            xml['snippet']['description']
-        except:
-            description = prefix
-
-        body = add_trailing_tabstop(body)
-        
-        atom = {scope: { description: { "prefix": prefix, "body": body} } }
-
+        # Get CSON settings
         sort_keys = loadConfig().get("csonSortKeys") or True
         indent = loadConfig().get("csonIndent") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(atom, sort_keys=sort_keys, indent=indent))
+        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to CSON, requires Better CoffeeScript package
         package = get_coffee()
@@ -166,50 +105,18 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         import cson, json
 
         # read data from view
-        selection = self.view.substr(sublime.Region(0, self.view.size()))
-
-        # interprete and validate data
-        try:
-            data = cson.loads(selection)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
+        input = self.view.substr(sublime.Region(0, self.view.size()))
+        data = read_atom_snippet(input)
+        if data is False:
             return
 
-        completions = []
-        scope_replacements = loadConfig().get("scopeReplacements") or True
+        output = write_subl_completions(data)
 
-        # but is it an Atom snippet?
-        try:
-            # get scope, convert if necessary
-            for key in data.keys():
-                for subl, atom in scope_replacements:
-                    if key == atom:
-                        scope = subl
-                        break
-                    else:
-                        scope = key.lstrip(".")
-
-                for item in (data[key]):
-
-                    # Create tab-separated description
-                    if item != data[key][item]["prefix"]:
-                        trigger = data[key][item]["prefix"] + "\t" + item
-                    else:
-                        trigger = data[key][item]["prefix"]
-
-                    body = remove_trailing_tabstop(data[key][item]["body"])
-                    completions.append( {"trigger": trigger, "contents": body} )
-        except:
-            sublime.error_message("Atomizr\n\nNot an Atom snippet file")
-            return
-
-        subl = {"#": SUBL_GENERATOR, "scope": scope, "completions": completions}
-
-        sort_keys = loadConfig().get("jsonSortKeys") or False
+        sort_keys = loadConfig().get("jsonSortKeys") or True
         indent = loadConfig().get("jsonIndent") or 2
 
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(subl, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
+        self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
         if sublime.version() >= "3103":
@@ -242,43 +149,16 @@ class SublJsonToXml(sublime_plugin.TextCommand):
         from lxml import etree
 
         # read data from view
-        selection = self.view.substr(sublime.Region(0, self.view.size()))
+        input = self.view.substr(sublime.Region(0, self.view.size()))
 
-        # interprete and validate data
-        try:
-            data = json.loads(selection)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
+        data = read_subl_completions(input)
+
+        output = write_subl_snippet(data)
+        if output is False:
             return
 
-        completions = data["completions"][0]
-
-        root = etree.Element("snippet")
-        content = etree.SubElement(root, "content")
-        content.text = etree.CDATA(completions["contents"])
-        tabTrigger = etree.SubElement(root, "tabTrigger")
-
-        if "\t" in completions['trigger']:
-            tabs = completions['trigger'].split("\t")
-
-            if len(tabs) > 2:
-                sublime.message_dialog("Atomizr: Conversion aborted, trigger contains multiple tabs.")
-                print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
-                return
-
-            tabTrigger.text = tabs[0]
-            description = etree.SubElement(root, "description")
-            description.text = tabs[-1]
-        else:
-            tabTrigger.text = completions['trigger']
-
-        scope = etree.SubElement(root, "scope")
-        scope.text = data["scope"]
-
-        xmlString = etree.tostring(root, pretty_print=True, encoding="utf-8").decode('utf-8')
-
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, XML_GENERATOR + xmlString)
+        self.view.replace(edit, selection, XML_GENERATOR + output)
 
         # set syntax to XML
         if sublime.version() >= "3103":
@@ -421,6 +301,206 @@ class SublToSublCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
 
 # Helper functions
+def read_atom_snippet(input):
+    import cson
+    # interprete and validate data
+    try:
+        data = cson.loads(input)
+    except:
+        sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
+        return False
+
+    completions = []
+    scope_replacements = loadConfig().get("scopeReplacements") or True
+
+    # but is it an Atom snippet?
+    try:
+        for key in data.keys():
+            # get scope, convert if necessary
+            for subl, atom in scope_replacements:
+                if key == atom:
+                    scope = subl
+                    break
+                else:
+                    scope = key.lstrip(".")
+
+            # split tab-separated description
+            for item in (data[key]):
+                if item != data[key][item]["prefix"]:
+                    trigger = data[key][item]["prefix"] + "\t" + item
+                else:
+                    trigger = data[key][item]["prefix"]
+
+                contents = remove_trailing_tabstop(data[key][item]["body"])
+                completions.append( {"trigger": trigger, "contents": contents} )
+    except:
+        sublime.error_message("Atomizr\n\nNot an Atom snippet file")
+        return False
+
+    output = {
+        "scope": scope,
+        "completions": completions
+    }
+
+    return output
+
+def read_subl_completions(input):
+    import json, sys
+
+    # interprete and validate data
+    try:
+        data = json.loads(input)
+    except ValueError:
+        sublime.error_message("Atomizr\n\nInvalid JSON")
+        return False
+
+    scope_replacements = loadConfig().get("scopeReplacements") or True
+
+    output = {}
+    # but is it a Sublime Text completion?
+    try:
+        # get scope, convert if necessary
+        for subl, atom in scope_replacements:
+            if data['scope'] == subl:
+                output["scope"] = atom
+                break
+            else:
+                # output["scope"] = data['scope']
+                output["scope"] = data['scope']
+
+    except:
+        sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
+        return False
+    
+    output["completions"] = data['completions']
+    i = 0
+
+    for item in output["completions"]:
+        
+        completion = {}
+
+        # Split tab-separated description
+        if "\t" in item['trigger']:
+            tabs = item['trigger'].split("\t")
+
+            if len(tabs) > 2:
+                sublime.message_dialog("Atomizr: Conversion aborted, a trigger contains multiple tabs.")
+                print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
+                return False
+
+            completion["trigger"] = tabs[0]
+            completion["description"] = tabs[-1]
+        else:
+            completion["trigger"] = item['trigger']
+            completion["description"] = item['trigger']
+
+        completion["contents"] = add_trailing_tabstop(item['contents'])
+
+        output["completions"][i] = completion
+        i += 1
+
+    return output
+
+def read_subl_snippet(input):
+    import xmltodict
+
+    # interprete and validate data
+    try:
+        xml = xmltodict.parse(input)
+    except:
+        sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
+        return False
+
+
+    scope = xml['snippet']['scope']
+    trigger = xml['snippet']['tabTrigger']
+
+    # <description> is optional
+    try:
+        description = xml['snippet']['description']
+    except:
+        description = xml['snippet']['tabTrigger']
+
+    contents = add_trailing_tabstop(xml['snippet']['content'])
+
+    output = {
+        "scope": scope, 
+        "completions": [
+            {
+                "trigger": trigger,
+                "description": description,
+                "contents": contents,
+            }
+        ]
+    }
+
+    return output
+
+def write_atom_snippets(input):
+    snippets = {}
+
+    scope = input["scope"]
+
+    if scope[0] != ".":
+        scope = "." + scope
+
+    for snippet in input["completions"]:
+        prefix = snippet["trigger"]
+        description = snippet["description"]
+        body = snippet["contents"]
+
+        try:
+            snippets[description] = {'prefix': prefix, 'body':  body}
+        except KeyError:
+            pass
+
+    output = {
+        scope: (snippets)
+    }
+
+    return output
+
+def write_subl_completions(input):
+
+    output = {
+        "#": SUBL_GENERATOR,
+        "scope": input["scope"],
+        "completions": input["completions"]
+    }
+
+    return output
+
+def write_subl_snippet(input):
+    from lxml import etree
+
+    completions = input["completions"][0]
+
+    data = etree.Element("snippet")
+    content = etree.SubElement(data, "content")
+    content.text = etree.CDATA(input["completions"][0]["contents"])
+    tabTrigger = etree.SubElement(data, "tabTrigger")
+
+    if "\t" in input["completions"][0]['trigger']:
+        tabs = input["completions"][0]['trigger'].split("\t")
+
+        if len(tabs) > 2:
+            sublime.message_dialog("Atomizr: Conversion aborted, trigger contains multiple tabs.")
+            print("Atomizr: Conversion aborted, trigger '%s' contains multiple tabs." % item["trigger"].replace("\t", "\\t"))
+            return False
+
+        tabTrigger.text = tabs[0]
+        description = etree.SubElement(data, "description")
+        description.text = tabs[-1]
+    else:
+        tabTrigger.text = input["completions"][0]['trigger']
+
+    scope = etree.SubElement(data, "scope")
+    scope.text = input["scope"]
+
+    output = etree.tostring(data, pretty_print=True, encoding="utf-8").decode('utf-8')
+
+    return output
+
 def loadConfig():
     return sublime.load_settings('Atomizr.sublime-settings')
 
