@@ -205,7 +205,6 @@ class SublXmlToJson(sublime_plugin.TextCommand):
                     "trigger": trigger,
                     "contents": contents
                 }
-                
             ]
         }
 
@@ -365,7 +364,6 @@ def read_subl_completions(input):
                 output["scope"] = atom
                 break
             else:
-                # output["scope"] = data['scope']
                 output["scope"] = data['scope']
 
     except:
@@ -410,7 +408,6 @@ def read_subl_snippet(input):
     except:
         sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
         return False
-
 
     scope = xml['snippet']['scope']
     trigger = xml['snippet']['tabTrigger']
