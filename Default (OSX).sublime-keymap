@@ -27,6 +27,19 @@
   },
   {
     "keys": [
+      "ctrl+a", "ctrl+v"
+    ],
+    "command": "atom_to_vscode",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.coffee, source.json"
+      }
+    ]
+  },
+  {
+    "keys": [
       "ctrl+s", "ctrl+a"
     ],
     "command": "subl_to_atom",
@@ -34,8 +47,20 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand":  "equal",
-        "operand": "source.coffee, source.json, text.xml"
+        "operand": "source.json, text.xml"
+      }
+    ]
+  },
+  {
+    "keys": [
+      "ctrl+s", "ctrl+v"
+    ],
+    "command": "subl_to_vscode",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.json, text.xml"
       }
     ]
   },

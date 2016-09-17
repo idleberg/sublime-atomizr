@@ -24,8 +24,16 @@
                 "command": "atom_to_subl"
               },
               {
+                "caption": "Convert Atom to Visual Studio Code",
+                "command": "atom_to_vscode"
+              },
+              {
                 "caption": "Convert Sublime Text to Atom",
                 "command": "subl_to_atom"
+              },
+              {
+                "caption": "Convert Sublime Text to Visual Studio Code",
+                "command": "subl_to_vscode"
               },
               {
                 "caption": "Toggle Atom format",

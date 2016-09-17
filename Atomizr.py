@@ -29,6 +29,7 @@ class AutomizrCommand(sublime_plugin.TextCommand):
 class SublToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
+
         scope = self.view.scope_name(self.view.sel()[0].a)
 
         if "source.json" in scope or "source.sublimecompletions" in scope: 
@@ -140,7 +141,75 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
         else:
             sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
 
-# Converts Sublime Text snippets into Sublime Text completions
+# Converts Atom snippets into Visual Studio Code snippets
+class AtomToVscodeCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import cson, json
+
+        # read data from view
+        input = self.view.substr(sublime.Region(0, self.view.size()))
+        data = read_atom_snippet(input)
+        if data is False:
+            return
+
+        output = write_vscode_snippets(data)
+
+        sort_keys = loadConfig().get("jsonSortKeys") or True
+        indent = loadConfig().get("jsonIndent") or 2
+
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
+
+        # set syntax to JSON
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
+
+        rename_file(self, "json")
+
+# Converts Sublime Text snippets into Visual Studio Code snippets
+class SublToVscodeCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        import cson, json
+
+        scope = self.view.scope_name(self.view.sel()[0].a)
+
+        # read data from view
+        input = self.view.substr(sublime.Region(0, self.view.size()))
+
+        if "source.json" in scope or "source.sublimecompletions" in scope: 
+            print("Atomizr: JSON detected, trying to convert")
+            data = read_subl_completions(input)
+        elif "text.xml" in scope:
+            print("Atomizr: XML detected, trying to convert")
+            data = read_subl_snippet(input)
+        else:
+            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
+
+        # data = read_subl_snippet(input)
+        if data is False:
+            return
+
+        output = write_vscode_snippets(data)
+
+        sort_keys = loadConfig().get("jsonSortKeys") or True
+        indent = loadConfig().get("jsonIndent") or 2
+
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
+
+        # set syntax to JSON
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
+
+        rename_file(self, "json")
+
+        # Converts Sublime Text snippets into Sublime Text completions
 class SublJsonToXml(sublime_plugin.TextCommand):
 
     def run(self, edit):
@@ -238,7 +307,7 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
             return
 
-        sort_keys = loadConfig().get("jsonSortKeys") or True
+        sort_keys = loadConfig().get("jsonSortKeys") or False
         indent = loadConfig().get("jsonIndent") or 2
 
         # write converted data to view
@@ -325,12 +394,15 @@ def read_atom_snippet(input):
             # split tab-separated description
             for item in (data[key]):
                 if item != data[key][item]["prefix"]:
-                    trigger = data[key][item]["prefix"] + "\t" + item
-                else:
-                    trigger = data[key][item]["prefix"]
+                    description = item
+                trigger = data[key][item]["prefix"]
 
                 contents = remove_trailing_tabstop(data[key][item]["body"])
-                completions.append( {"trigger": trigger, "contents": contents} )
+                if description is None:
+                    completions.append( {"trigger": trigger, "contents": contents} )
+                else:
+                    completions.append( {"trigger": trigger, "contents": contents, "description": description} )
+
     except:
         sublime.error_message("Atomizr\n\nNot an Atom snippet file")
         return False
@@ -453,6 +525,21 @@ def write_atom_snippets(input):
     output = {
         scope: (snippets)
     }
+
+    return output
+
+def write_vscode_snippets(input):
+    output = {}
+
+    for snippet in input["completions"]:
+        prefix = snippet["trigger"]
+        description = snippet["description"]
+        body = snippet["contents"]
+
+        try:
+            output[prefix] = {'prefix': prefix, 'body':  body, 'description': description}
+        except KeyError:
+            pass
 
     return output
 
