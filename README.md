@@ -29,7 +29,6 @@ Since [package dependencies](https://packagecontrol.io/docs/dependencies) are ha
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
 * Automatic conversion
-* Convert Sublime Text to Atom
 * Convert Atom to Sublime Text
 * Convert Atom to Visual Studio Code
 * Convert Sublime Text to Atom
