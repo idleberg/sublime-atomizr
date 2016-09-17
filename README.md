@@ -31,8 +31,9 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Automatic conversion
 * Convert Sublime Text to Atom
 * Convert Atom to Sublime Text
-* Convert Sublime Text completions to Atom
-* Convert Sublime Text snippet to Atom
+* Convert Atom to Visual Studio Code
+* Convert Sublime Text to Atom
+* Convert Sublime Text to Visual Studio Code
 * Toggle Atom format (CSON⟷JSON)
 * Toggle Sublime Text format (XML⟷JSON)
 
@@ -42,12 +43,14 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 
 *The following examples all use the macOS shortcuts, for Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> rather than just <kbd>Ctrl</kbd>.*
 
-Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>S</kbd> key for Sublime Text and the <kbd>A</kbd> key for Atom:
+Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>A</kbd> key for Atom, the <kbd>S</kbd> key for Sublime Text and the <kbd>V</kbd> key for Visual Studio Code:
 
-* Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
-* Atom to Sublime Text (A to S): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
-* Atom to Atom (A to A): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
-* Sublime Text to Sublime Text (S to S): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+* Atom to Sublime Text (“A to S”): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+* Atom to Visual Studio Code (“A to V”): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
+* Sublime Text to Atom (“S to A”): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+* Sublime Text to Visual Studio Code (“S to V”): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
+* Atom to Atom (“A to A”): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+* Sublime Text to Sublime Text (“S to S”): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
 For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice.
 
