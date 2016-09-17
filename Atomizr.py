@@ -222,8 +222,6 @@ class SublJsonToXml(sublime_plugin.TextCommand):
         data = read_subl_completions(input)
 
         output = write_subl_snippet(data)
-        if output is False:
-            return
 
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, XML_GENERATOR + output)
@@ -243,45 +241,51 @@ class SublXmlToJson(sublime_plugin.TextCommand):
         import json, xmltodict
 
         # read data from view
-        selection = self.view.substr(sublime.Region(0, self.view.size()))
+        input = self.view.substr(sublime.Region(0, self.view.size()))
 
-        # interprete and validate data
-        try:
-            xml = xmltodict.parse(selection)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
+        # # interprete and validate data
+        # try:
+        #     xml = xmltodict.parse(selection)
+        # except:
+        #     sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
+        #     return
+
+        # contents = xml['snippet']['content']
+        # scope = xml['snippet']['scope']
+        # trigger = xml['snippet']['tabTrigger']
+
+        # # <description> is optional
+        # try:
+        #     description = xml['snippet']['description']
+        #     trigger = trigger + "\t" + description
+        # except:
+        #     pass
+
+        # contents = add_trailing_tabstop(contents)
+
+        # subl = {
+        #     "#": SUBL_GENERATOR,
+        #     "scope": scope,
+        #     "completions": [
+        #         {
+        #             "trigger": trigger,
+        #             "contents": contents
+        #         }
+        #     ]
+        # }
+
+        data = read_subl_snippet(input)
+        if data is False:
             return
 
-        contents = xml['snippet']['content']
-        scope = xml['snippet']['scope']
-        trigger = xml['snippet']['tabTrigger']
-
-        # <description> is optional
-        try:
-            description = xml['snippet']['description']
-            trigger = trigger + "\t" + description
-        except:
-            pass
-
-        contents = add_trailing_tabstop(contents)
-
-        subl = {
-            "#": SUBL_GENERATOR,
-            "scope": scope,
-            "completions": [
-                {
-                    "trigger": trigger,
-                    "contents": contents
-                }
-            ]
-        }
+        output = write_subl_completions(data)
 
         sort_keys = loadConfig().get("jsonSortKeys") or True
         indent = loadConfig().get("jsonIndent") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, json.dumps(subl, sort_keys=sort_keys, indent=indent))
+        self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to JSON
         if sublime.version() >= "3103":
@@ -367,6 +371,35 @@ class SublToSublCommand(sublime_plugin.TextCommand):
         else:
             sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
 
+# Convert Visual Studio Code into Atom snippets
+class VscodeToAtomCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        # read data from view
+        selection = self.view.substr(sublime.Region(0, self.view.size()))
+
+        # interprete and validate data
+        try:
+            data = json.loads(selection)
+        except:
+            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
+            return
+
+        sort_keys = loadConfig().get("csonSortKeys") or True
+        indent = loadConfig().get("csonIndent") or 2
+
+        # write converted data to view
+        selection = sublime.Region(0, self.view.size())
+        self.view.replace(edit, selection, cson.dumps(data, sort_keys=sort_keys, indent=indent))
+
+        # set syntax to JSON, requires Better CoffeeScript package
+        package = get_coffee()
+        if package is not False:
+            self.view.set_syntax_file(package)
+
+        rename_file(self, "cson")
+
+
 # Helper functions
 def read_atom_snippet(input):
     import cson
@@ -391,7 +424,7 @@ def read_atom_snippet(input):
                 else:
                     scope = key.lstrip(".")
 
-            # split tab-separated description
+            # add description, if available
             for item in (data[key]):
                 if item != data[key][item]["prefix"]:
                     description = item
@@ -504,6 +537,38 @@ def read_subl_snippet(input):
 
     return output
 
+def read_vscode_snippet(input):
+    import json
+    # interprete and validate data
+    try:
+        data = json.loads(input)
+    except:
+        sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
+        return False
+
+    output = []
+
+    # but is it an Atom snippet?
+    try:
+        for key in data.keys():
+            # add description, if available
+            for item in (data[key]):
+                if item != data[key][item]["prefix"]:
+                    description = item
+                trigger = data[key][item]["prefix"]
+                body = data[key][item]["body"]
+
+                if description is None:
+                    output.append( {"trigger": trigger, "body": contents} )
+                else:
+                    output.append( {"trigger": trigger, "body": contents, "description": description} )
+
+    except:
+        sublime.error_message("Atomizr\n\nNot a Visual Studio Code snippet file")
+        return False
+
+    return output
+
 def write_atom_snippets(input):
     snippets = {}
 
@@ -528,22 +593,12 @@ def write_atom_snippets(input):
 
     return output
 
-def write_vscode_snippets(input):
-    output = {}
-
-    for snippet in input["completions"]:
-        prefix = snippet["trigger"]
-        description = snippet["description"]
-        body = snippet["contents"]
-
-        try:
-            output[prefix] = {'prefix': prefix, 'body':  body, 'description': description}
-        except KeyError:
-            pass
-
-    return output
-
 def write_subl_completions(input):
+    # create tab-separated description
+    for completion in input["completions"]:
+        if completion["description"]:
+            completion['trigger'] = completion['trigger'] + "\t" + completion["description"]
+            completion.pop("description", None)
 
     output = {
         "#": SUBL_GENERATOR,
@@ -571,6 +626,21 @@ def write_subl_snippet(input):
         description.text = input["completions"][0]["description"]
 
     output = etree.tostring(data, pretty_print=True, encoding="utf-8").decode('utf-8')
+
+    return output
+
+def write_vscode_snippets(input):
+    output = {}
+
+    for snippet in input["completions"]:
+        prefix = snippet["trigger"]
+        description = snippet["description"]
+        body = snippet["contents"]
+
+        try:
+            output[prefix] = {'prefix': prefix, 'body':  body, 'description': description}
+        except KeyError:
+            pass
 
     return output
 
