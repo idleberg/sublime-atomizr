@@ -28,6 +28,14 @@
         "command": "atom_to_vscode"
     },
     {
+        "caption": "Atomizr: Convert Visual Code to Atom",
+        "command": "vscode_to_atom"
+    },
+    {
+        "caption": "Atomizr: Convert Visual Code to Sublime Text",
+        "command": "vscode_to_subl"
+    },
+    {
         "caption": "Atomizr: Toggle Atom format",
         "command": "atom_to_atom"
     },

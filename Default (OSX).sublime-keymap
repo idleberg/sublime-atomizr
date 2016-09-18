@@ -66,6 +66,32 @@
   },
   {
     "keys": [
+      "ctrl+v", "ctrl+a"
+    ],
+    "command": "vscode_to_atom",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.json"
+      }
+    ]
+  },
+  {
+    "keys": [
+      "ctrl+v", "ctrl+s"
+    ],
+    "command": "vscode_to_subl",
+    "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "source.json"
+      }
+    ]
+  },
+  {
+    "keys": [
       "ctrl+a", "ctrl+a"
     ],
     "command": "atom_to_atom",
