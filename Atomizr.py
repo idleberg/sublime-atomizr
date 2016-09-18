@@ -192,7 +192,6 @@ class SublToVscodeCommand(sublime_plugin.TextCommand):
         else:
             sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
 
-        # data = read_subl_snippet(input)
         if data is False:
             return
 
@@ -398,10 +397,11 @@ class VscodeToSublCommand(sublime_plugin.TextCommand):
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
-        # set syntax to JSON, requires Better CoffeeScript package
-        package = get_coffee()
-        if package is not False:
-            self.view.set_syntax_file(package)
+        # set syntax to JSON
+        if sublime.version() >= "3103":
+            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
         rename_file(self, "sublime-completions")
 
@@ -503,7 +503,7 @@ def read_subl_completions(input):
             completion["description"] = tabs[-1]
         else:
             completion["trigger"] = item['trigger']
-            completion["description"] = item['trigger']
+            # completion["description"] = item['trigger']
 
         completion["contents"] = add_trailing_tabstop(item['contents'])
 
@@ -526,23 +526,32 @@ def read_subl_snippet(input):
     trigger = xml['snippet']['tabTrigger']
 
     # <description> is optional
-    try:
+    if 'description' in xml['snippet']:
         description = xml['snippet']['description']
-    except:
-        description = xml['snippet']['tabTrigger']
 
     contents = add_trailing_tabstop(xml['snippet']['content'])
 
-    output = {
-        "scope": scope, 
-        "completions": [
-            {
-                "trigger": trigger,
-                "description": description,
-                "contents": contents,
-            }
-        ]
-    }
+    if "description" in xml["snippet"]:
+        output = {
+            "scope": scope, 
+            "completions": [
+                {
+                    "trigger": trigger,
+                    "description": description,
+                    "contents": contents,
+                }
+            ]
+        }
+    else:
+        output = {
+            "scope": scope, 
+            "completions": [
+                {
+                    "trigger": trigger,
+                    "contents": contents,
+                }
+            ]
+        }
 
     return output
 
@@ -562,15 +571,15 @@ def read_vscode_snippet(input):
     try:
         for k in data:
             prefix = data[k]["prefix"]
-            if data[k]["description"] is None:
+            if "description" in data[k]:
                 description = data[k]["description"]
             body = data[k]["body"]
 
             contents = remove_trailing_tabstop(data[k]["body"])
             if "description" in data[k]:
-                completions.append( {"trigger": prefix, "contents": body} )
-            else:
                 completions.append( {"trigger": prefix, "contents": body, "description": description} )
+            else:
+                completions.append( {"trigger": prefix, "contents": body} )
 
     except:
         sublime.error_message("Atomizr\n\nNot a Visual Studio Code snippet file")
@@ -651,11 +660,16 @@ def write_vscode_snippets(input):
 
     for snippet in input["completions"]:
         prefix = snippet["trigger"]
-        description = snippet["description"]
+        if "description" in snippet:
+            description = snippet["description"]
         body = snippet["contents"]
 
         try:
-            output[prefix] = {'prefix': prefix, 'body':  body, 'description': description}
+            if "description" in snippet:
+                output[prefix] = {'prefix': prefix, 'body':  body, 'description': description}
+            else:
+                output[prefix] = {'prefix': prefix, 'body':  body}
+
         except KeyError:
             pass
 
