@@ -389,7 +389,7 @@ class VscodeToSublCommand(sublime_plugin.TextCommand):
         if data is False:
             return
 
-        output = write_subl_snippets(data)
+        output = write_subl_completions(data)
 
         sort_keys = loadConfig().get("csonSortKeys") or True
         indent = loadConfig().get("csonIndent") or 2
@@ -433,6 +433,7 @@ def read_atom_snippet(input):
 
             # add description, if available
             for item in (data[key]):
+                print(item)
                 if "description" in data[key][item]:
                     description = data[key][item]["description"]
                 else:
@@ -440,9 +441,12 @@ def read_atom_snippet(input):
                 trigger = data[key][item]["prefix"]
 
                 contents = remove_trailing_tabstop(data[key][item]["body"])
+                print("409")
                 if description is None:
+                    print("410")
                     completions.append( {"trigger": trigger, "contents": contents} )
                 else:
+                    print("413")
                     completions.append( {"trigger": trigger, "contents": contents, "description": description} )
 
     except:
@@ -581,6 +585,7 @@ def read_vscode_snippet(input):
         "completions": completions
     }
 
+    print(output)
     return output
 
 def write_atom_snippets(input):
