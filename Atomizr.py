@@ -391,19 +391,19 @@ class VscodeToSublCommand(sublime_plugin.TextCommand):
 
         output = write_subl_completions(data)
 
-        sort_keys = loadConfig().get("csonSortKeys") or True
-        indent = loadConfig().get("csonIndent") or 2
+        sort_keys = loadConfig().get("jsonSortKeys") or True
+        indent = loadConfig().get("jsonIndent") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(output, sort_keys=sort_keys, indent=indent))
+        self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to JSON, requires Better CoffeeScript package
         package = get_coffee()
         if package is not False:
             self.view.set_syntax_file(package)
 
-        rename_file(self, "cson")
+        rename_file(self, "sublime-completions")
 
 
 # Helper functions
@@ -433,7 +433,6 @@ def read_atom_snippet(input):
 
             # add description, if available
             for item in (data[key]):
-                print(item)
                 if "description" in data[key][item]:
                     description = data[key][item]["description"]
                 else:
@@ -441,12 +440,9 @@ def read_atom_snippet(input):
                 trigger = data[key][item]["prefix"]
 
                 contents = remove_trailing_tabstop(data[key][item]["body"])
-                print("409")
                 if description is None:
-                    print("410")
                     completions.append( {"trigger": trigger, "contents": contents} )
                 else:
-                    print("413")
                     completions.append( {"trigger": trigger, "contents": contents, "description": description} )
 
     except:
@@ -585,7 +581,6 @@ def read_vscode_snippet(input):
         "completions": completions
     }
 
-    print(output)
     return output
 
 def write_atom_snippets(input):
@@ -618,7 +613,7 @@ def write_atom_snippets(input):
 def write_subl_completions(input):
     # create tab-separated description
     for completion in input["completions"]:
-        if completion["description"]:
+        if "description" in completion:
             completion['trigger'] = completion['trigger'] + "\t" + completion["description"]
             completion.pop("description", None)
 
