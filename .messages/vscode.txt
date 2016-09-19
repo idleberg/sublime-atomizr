@@ -1,0 +1,15 @@
+VISUAL STUDIO CODE
+==================
+
+As of v0.24.0, this package lets you convert Visual Studio Code snippets. These
+are the new commands available in this new version:
+
+    * Convert Atom to Visual Studio Code
+    * Convert Sublime Text to Visual Studio Code
+    * Convert Visual Studio Code to Atom
+    * Convert Visual Studio Code to Sublime Text
+
+Keyboard shortcuts work as before, with the V-key is used for Visual Studio
+Code. More details in the README:
+
+    https://github.com/idleberg/sublime-atomizr#keyboard-shortcuts

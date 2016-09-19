@@ -1,5 +1,6 @@
 {
     "0.6.0": ".messages/coffeescript.txt",
     "0.12.0": ".messages/cson-update.txt",
+    "0.24.0": ".messages/vscode.txt",
     "install": ".messages/coffeescript.txt"
 }
