@@ -33,6 +33,8 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Convert Atom to Visual Studio Code
 * Convert Sublime Text to Atom
 * Convert Sublime Text to Visual Studio Code
+* Convert Visual Studio Code to Atom
+* Convert Visual Studio Code to Sublime Text
 * Toggle Atom format (CSON⟷JSON)
 * Toggle Sublime Text format (XML⟷JSON)
 
@@ -48,6 +50,8 @@ Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd
 * Atom to Visual Studio Code (“A to V”): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
 * Sublime Text to Atom (“S to A”): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 * Sublime Text to Visual Studio Code (“S to V”): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
+* Visual Studio Code to Atom (“V to A”): <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+* Visual Studio Code to Sublime Text (“V to S”): <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 * Atom to Atom (“A to A”): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 * Sublime Text to Sublime Text (“S to S”): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
