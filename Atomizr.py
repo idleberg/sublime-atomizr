@@ -487,6 +487,10 @@ def read_subl_completions(input):
     i = 0
 
     for item in output["completions"]:
+
+        if "trigger" not in item and "contents" not in item:
+            print("Atomizr: Skipping " + str(item))
+            continue
         
         completion = {}
 
@@ -503,7 +507,6 @@ def read_subl_completions(input):
             completion["description"] = tabs[-1]
         else:
             completion["trigger"] = item['trigger']
-            # completion["description"] = item['trigger']
 
         completion["contents"] = add_trailing_tabstop(item['contents'])
 
@@ -601,6 +604,9 @@ def write_atom_snippets(input):
         scope = "." + scope
 
     for snippet in input["completions"]:
+        if "trigger" not in snippet and "contents" not in snippet:
+            continue
+
         prefix = snippet["trigger"]
         if "description" in snippet:
             description = snippet["description"]
@@ -622,6 +628,9 @@ def write_atom_snippets(input):
 def write_subl_completions(input):
     # create tab-separated description
     for completion in input["completions"]:
+        if "trigger" not in completion and "contents" not in completion:
+            continue
+
         if "description" in completion:
             completion['trigger'] = completion['trigger'] + "\t" + completion["description"]
             completion.pop("description", None)
@@ -659,6 +668,9 @@ def write_vscode_snippets(input):
     output = {}
 
     for snippet in input["completions"]:
+        if "trigger" not in snippet and "contents" not in snippet:
+            continue
+
         prefix = snippet["trigger"]
         if "description" in snippet:
             description = snippet["description"]
