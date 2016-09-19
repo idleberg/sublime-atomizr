@@ -8,7 +8,7 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand": "source.coffee, source.json, text.xml"
+        "operand": "source.sublimecompletions, source.coffee, source.json, text.xml"
       }
     ]
   },
@@ -47,7 +47,7 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand": "source.json, text.xml"
+        "operand": "source.sublimecompletions, source.json, text.xml"
       }
     ]
   },
@@ -60,7 +60,7 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand": "source.json, text.xml"
+        "operand": "source.sublimecompletions, source.json, text.xml"
       }
     ]
   },
@@ -112,7 +112,7 @@
       {
         "key": "selector",
         "operator": "equal",
-        "operand": "source.json, text.xml"
+        "operand": "source.sublimecompletions, source.json, text.xml"
       }
     ]
   }
