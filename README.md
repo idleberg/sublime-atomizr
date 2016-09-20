@@ -42,7 +42,7 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 
 ### Keyboard Shortcuts
 
-*The following examples use the macOS shortcuts, for Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> as modifier rather than <kbd>Ctrl</kbd>.*
+*The following examples use the macOS shortcuts, for Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> as modifier rather than <kbd>Ctrl</kbd>*
 
 Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>A</kbd> key for Atom, the <kbd>S</kbd> key for Sublime Text and the <kbd>V</kbd> key for Visual Studio Code:
 
