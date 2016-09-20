@@ -1,4 +1,4 @@
-import sublime, sublime_plugin
+import sublime
 from .helpers import Helpers
 
 class Atom():
@@ -39,9 +39,7 @@ class Atom():
                         if item != trigger:
                             description = item
 
-                    print(42)
                     contents = Helpers.remove_trailing_tabstop(data[key][item]["body"])
-                    print(44)
                     if description is None:
                         completions.append( {"trigger": trigger, "contents": contents} )
                     else:

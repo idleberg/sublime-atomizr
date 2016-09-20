@@ -1,4 +1,4 @@
-import sublime, sublime_plugin
+import sublime
 
 class Helpers():
 

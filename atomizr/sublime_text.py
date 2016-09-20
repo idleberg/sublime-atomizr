@@ -1,4 +1,4 @@
-import sublime, sublime_plugin
+import sublime
 from .helpers import Helpers
 
 GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"

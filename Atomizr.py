@@ -5,9 +5,9 @@ from .atomizr.sublime_text import SublimeText
 from .atomizr.vscode import VsCode
 from .atomizr.helpers import Helpers
 
-SUBL_GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
-ATOM_GENERATOR = "# %s\n" % SUBL_GENERATOR
-XML_GENERATOR = "<!-- %s -->\n" % SUBL_GENERATOR
+GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
+ATOM_GENERATOR = "# %s\n" % GENERATOR
+XML_GENERATOR = "<!-- %s -->\n" % GENERATOR
 
 # Automatic conversion, based on scope
 class AutomizrCommand(sublime_plugin.TextCommand):
