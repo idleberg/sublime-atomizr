@@ -433,11 +433,15 @@ def read_atom_snippet(input):
 
             # add description, if available
             for item in (data[key]):
+                trigger = data[key][item]["prefix"]
                 if "description" in data[key][item]:
+                    print("data[key][item][description]")
                     description = data[key][item]["description"]
                 else:
-                    description = item
-                trigger = data[key][item]["prefix"]
+                    if item != trigger:
+                        description = item
+                    else:
+                        description = None
 
                 contents = remove_trailing_tabstop(data[key][item]["body"])
                 if description is None:
@@ -656,7 +660,7 @@ def write_subl_snippet(input):
     scope = etree.SubElement(data, "scope")
     scope.text = input["scope"]
 
-    if input['completions'][0]['description']:
+    if 'description' in input['completions'][0]:
         description = etree.SubElement(data, "description")
         description.text = input["completions"][0]["description"]
 
