@@ -5,7 +5,7 @@
 [![GitHub release](https://img.shields.io/github/release/idleberg/sublime-atomizr.svg?style=flat-square)](https://github.com/idleberg/sublime-atomizr/releases)
 [![Travis](https://img.shields.io/travis/idleberg/sublime-atomizr.svg?style=flat-square)](https://travis-ci.org/idleberg/sublime-atomizr)
 
-Convert Sublime Text completions into Atom snippets, and vice versa.
+Convert Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa.
 
 Also available for [Atom](https://github.com/idleberg/atom-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr) (see the [comparison chart](https://gist.github.com/idleberg/db6833ee026d2cd7c043bba36733b701)).
 
@@ -28,7 +28,7 @@ Since [package dependencies](https://packagecontrol.io/docs/dependencies) are ha
 
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
-* Automatic conversion
+* Automatic conversion¹
 * Convert Atom to Sublime Text
 * Convert Atom to Visual Studio Code
 * Convert Sublime Text to Atom
@@ -37,6 +37,8 @@ The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_p
 * Convert Visual Studio Code to Sublime Text
 * Toggle Atom format (CSON⟷JSON)
 * Toggle Sublime Text format (XML⟷JSON)
+
+¹⁾ converts Atom and Sublime Text only
 
 **Note:** Since automatic conversion is based on scope, make sure the a supported CoffeeScript package is installed as well. Using [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) is recommended, though [CoffeeScript](https://packagecontrol.io/packages/CoffeeScript), [IcedCoffeeScript](https://packagecontrol.io/packages/IcedCoffeeScript) and [Mongoose CoffeeScript](https://packagecontrol.io/packages/Mongoose%20CoffeeScript) are also supported.
 
