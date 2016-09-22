@@ -38,7 +38,7 @@ Convert Sublime Text to Visual Studio Code | `JSON|XML`      | `JSON`
 Convert Visual Studio Code to Atom         | `JSON`          | `CSON`
 Convert Visual Studio Code to Sublime Text | `JSON`          | `JSON`
 Toggle Atom format                         | `CSON|JSON`     | `JSON|CSON`
-Toggle Sublime Text format (XML⟷JSON)     | `JSON|XML`      | `XML|JSON`
+Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
 ¹⁾ converts Atom and Sublime Text only
 
