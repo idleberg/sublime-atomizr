@@ -29,12 +29,12 @@ Since [package dependencies](https://packagecontrol.io/docs/dependencies) are ha
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
 * Automatic conversion¹
-* Convert Atom to Sublime Text
+* Convert Atom to Sublime Text (JSON)
 * Convert Atom to Visual Studio Code
-* Convert Sublime Text to Atom
+* Convert Sublime Text to Atom (CSON)
 * Convert Sublime Text to Visual Studio Code
-* Convert Visual Studio Code to Atom
-* Convert Visual Studio Code to Sublime Text
+* Convert Visual Studio Code to Atom (CSON)
+* Convert Visual Studio Code to Sublime Text (JSON)
 * Toggle Atom format (CSON⟷JSON)
 * Toggle Sublime Text format (XML⟷JSON)
 
