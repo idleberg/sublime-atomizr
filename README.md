@@ -46,7 +46,7 @@ Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
 ### Keyboard Shortcuts
 
-*The following examples use the macOS keyboard shortcuts. For Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> as modifier key rather than <kbd>Ctrl</kbd>*
+*The following examples use the macOS keyboard shortcuts. On Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> as modifier key instead of <kbd>Ctrl</kbd>.*
 
 Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>A</kbd> key for Atom, the <kbd>S</kbd> key for Sublime Text and the <kbd>V</kbd> key for Visual Studio Code:
 
