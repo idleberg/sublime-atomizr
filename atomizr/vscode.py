@@ -22,9 +22,8 @@ class VsCode():
                 prefix = data[k]["prefix"]
                 if "description" in data[k]:
                     description = data[k]["description"]
-                body = data[k]["body"]
+                body = Helpers.remove_trailing_tabstop(data[k]["body"])
 
-                contents = Helpers.remove_trailing_tabstop(data[k]["body"])
                 if "description" in data[k]:
                     completions.append( {"trigger": prefix, "contents": body, "description": description} )
                 else:
