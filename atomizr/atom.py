@@ -74,7 +74,7 @@ class Atom():
                 description = snippet["description"]
             else:
                 description = snippet["trigger"]
-            body = snippet["contents"]
+            body = Helpers.add_trailing_tabstop(snippet["contents"])
 
             try:
                 snippets[description] = {'prefix': prefix, 'body':  body}

@@ -1,5 +1,4 @@
 import sublime
-from .helpers import Helpers
 
 GENERATOR = "Generated with Atomizr - https://github.com/idleberg/sublime-atomizr"
 
@@ -58,7 +57,7 @@ class SublimeText():
             else:
                 completion["trigger"] = item['trigger']
 
-            completion["contents"] = Helpers.add_trailing_tabstop(item['contents'])
+            completion["contents"] = item['contents']
 
             output["completions"][i] = completion
             i += 1
@@ -83,7 +82,7 @@ class SublimeText():
         if 'description' in xml['snippet']:
             description = xml['snippet']['description']
 
-        contents = Helpers.add_trailing_tabstop(xml['snippet']['content'])
+        contents = xml['snippet']['content']
 
         if "description" in xml["snippet"]:
             output = {

@@ -51,7 +51,7 @@ class VsCode():
             prefix = snippet["trigger"]
             if "description" in snippet:
                 description = snippet["description"]
-            body = snippet["contents"]
+            body = Helpers.add_trailing_tabstop(snippet["contents"])
 
             try:
                 if "description" in snippet:
