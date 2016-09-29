@@ -28,13 +28,7 @@ class Helpers():
             # nothing to do here
             return input
 
-        stops = re.findall(r'\${?(\d+)', input)
-        if len(stops) > 0:
-            stops.sort()
-            highest = int(stops[-1]) + 1
-            return input + "$" + str(highest)
-
-        return input + "$1"
+        return input + "$0"
 
     def remove_trailing_tabstop(input):
         import re
@@ -48,7 +42,23 @@ class Helpers():
         # remove tabstop
         return re.sub(r'\$\d+$', "", input)
 
-    def get_coffee():
+    def set_xml(this, extension):
+        if sublime.version() >= "3103":
+            this.view.set_syntax_file('Packages/XML/XML.sublime-syntax')
+        else:
+            this.view.set_syntax_file('Packages/XML/XML.tmLanguage')
+
+        this.rename_file(this, extension)
+
+    def set_json(this, extension):
+        if sublime.version() >= "3103":
+            this.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
+        else:
+            this.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
+
+        this.rename_file(this, extension)
+
+    def get_coffee(this):
         import os
 
         # package locations
@@ -68,11 +78,14 @@ class Helpers():
 
                 if os.path.isfile(location + "/" + package + ".sublime-package") is True:
                     if package is "IcedCoffeeScript":
-                        return "Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage"
+                        this.view.set_syntax_file("Packages/IcedCoffeeScript/Syntaxes/IcedCoffeeScript.tmLanguage")
+                        return True
                     elif package is "Mongoose CoffeeScript":
-                        return "Packages/Mongoose CoffeeScript/CoffeeScript.tmLanguage"
+                        this.view.set_syntax_file("Packages/Mongoose CoffeeScript/CoffeeScript.tmLanguage")
+                        return True
                     else:
-                        return "Packages/" + package + "/CoffeeScript.tmLanguage"
+                        this.view.set_syntax_file("Packages/" + package + "/CoffeeScript.tmLanguage")
+                        return True
 
         sublime.error_message("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
         return False

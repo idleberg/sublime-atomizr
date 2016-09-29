@@ -68,12 +68,9 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
 
-        # set syntax to CSON, requires Better CoffeeScript package
-        package = Helpers.get_coffee()
-        if package is not False:
-            self.view.set_syntax_file(package)
-
-        Helpers.rename_file(self, "cson")
+        # set syntax to CSON, requires supported CoffeeScript package
+        if Helpers.get_coffee(self) is True:
+            Helpers.rename_file(self, "cson")
 
 # Converts Sublime Text completions into Atom snippets
 class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
@@ -95,12 +92,9 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
 
-        # set syntax to CSON, requires Better CoffeeScript package
-        package = Helpers.get_coffee()
-        if package is not False:
-            self.view.set_syntax_file(package)
-
-        Helpers.rename_file(self, "cson")
+        # set syntax to CSON, requires supported CoffeeScript package
+        if Helpers.get_coffee(self) is True:
+            Helpers.rename_file(self, "cson")
 
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
@@ -123,12 +117,7 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
-
-        Helpers.rename_file(self, "sublime-completions")
+        Helpers.set_json(self, "sublime-completions")
 
 # Convert Atom format
 class AtomToAtomCommand(sublime_plugin.TextCommand):
@@ -169,12 +158,9 @@ class AtomToVscodeCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
-
-        Helpers.rename_file(self, "json")
+        # if Helpers.get_json(self) is True:
+            # Helpers.rename_file(self, "json")
+        Helpers.set_json(self, "json")
 
 # Converts Sublime Text snippets into Visual Studio Code snippets
 class SublToVscodeCommand(sublime_plugin.TextCommand):
@@ -208,12 +194,9 @@ class SublToVscodeCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
-
-        Helpers.rename_file(self, "json")
+        # if Helpers.get_json(self) is True:
+            # Helpers.rename_file(self, "json")
+        Helpers.set_json(self, "json")
 
         # Converts Sublime Text snippets into Sublime Text completions
 class SublJsonToXml(sublime_plugin.TextCommand):
@@ -233,12 +216,9 @@ class SublJsonToXml(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, XML_GENERATOR + output)
 
         # set syntax to XML
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/XML/XML.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/XML/XML.tmLanguage')
-
-        Helpers.rename_file(self, "sublime-snippet")
+        # if Helpers.get_xml(self) is True:
+        #     Helpers.rename_file(self, "sublime-snippet")
+        Helpers.set_xml(self, "sublime-snippet")
 
 # Converts Sublime Text snippets into Sublime Text completions
 class SublXmlToJson(sublime_plugin.TextCommand):
@@ -263,12 +243,7 @@ class SublXmlToJson(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to JSON
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
-
-        Helpers.rename_file(self, "sublime-completions")
+        Helpers.set_json(self, "sublime-completions")
 
 # Converts Atom snippets (CSON into JSON)
 class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
@@ -294,12 +269,9 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, json.dumps(data, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
-
-        Helpers.rename_file(self, "json")
+        # if Helpers.get_json(self) is True:
+            # Helpers.rename_file(self, "json")
+        Helpers.set_json(self, "json")
 
 # Converts Atom snippets (JSON into CSON)
 class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
@@ -322,14 +294,11 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(data, sort_keys=sort_keys, indent=indent))
+        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(data, sort_keys=sort_keys, indent=indent))
 
-        # set syntax to CSON, requires Better CoffeeScript package
-        package = Helpers.get_coffee()
-        if package is not False:
-            self.view.set_syntax_file(package)
-
-        Helpers.rename_file(self, "cson")
+        # set syntax to CSON, requires supported CoffeeScript package
+        if Helpers.get_coffee(self) is True:
+            Helpers.rename_file(self, "cson")
 
 # Convert Atom format
 class SublToSublCommand(sublime_plugin.TextCommand):
@@ -370,14 +339,11 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, cson.dumps(output, sort_keys=sort_keys, indent=indent))
+        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
 
-        # set syntax to JSON, requires Better CoffeeScript package
-        package = Helpers.get_coffee()
-        if package is not False:
-            self.view.set_syntax_file(package)
-
-        Helpers.rename_file(self, "cson")
+        # set syntax to CSON, requires supported CoffeeScript package
+        if Helpers.get_coffee(self) is True:
+            Helpers.rename_file(self, "cson")
 
 # Convert Visual Studio Code into Atom snippets
 class VscodeToSublCommand(sublime_plugin.TextCommand):
@@ -402,9 +368,4 @@ class VscodeToSublCommand(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to JSON
-        if sublime.version() >= "3103":
-            self.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
-        else:
-            self.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
-
-        Helpers.rename_file(self, "sublime-completions")
+        Helpers.set_json(self, "sublime-completions")
