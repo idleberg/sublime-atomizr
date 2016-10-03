@@ -60,17 +60,31 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
 
         output = Atom.write_cson(data)
 
-        # Get CSON settings
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("csonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("csonIndent") or 2
+        json_snippets = sublime.load_settings('Atomizr.sublime-settings').get("atom_json_snippets") or False
 
-        # write converted data to view
-        selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
+        if json_snippets is True:
 
-        # set syntax to CSON, requires supported CoffeeScript package
-        if Helpers.get_coffee(self) is True:
-            Helpers.rename_file(self, "cson")
+            sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+            indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
+
+            selection = sublime.Region(0, self.view.size())
+            self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
+
+            # set syntax to JSON
+            Helpers.set_json(self)
+            Helpers.rename_file(self, "json")
+        else:
+            # Get CSON settings
+            sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("cson_sort_keys") or True
+            indent = sublime.load_settings('Atomizr.sublime-settings').get("cson_indentation") or 2
+
+            # write converted data to view
+            selection = sublime.Region(0, self.view.size())
+            self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
+
+            # set syntax to CSON, requires supported CoffeeScript package
+            if Helpers.get_coffee(self) is True:
+                Helpers.rename_file(self, "cson")
 
 # Converts Sublime Text completions into Atom snippets
 class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
@@ -84,17 +98,31 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
 
         output = Atom.write_cson(data)
 
-        # Get CSON settings
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("csonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("csonIndent") or 2
+        json_snippets = sublime.load_settings('Atomizr.sublime-settings').get("atom_json_snippets") or False
 
-        # write converted data to view
-        selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
+        if json_snippets is True:
 
-        # set syntax to CSON, requires supported CoffeeScript package
-        if Helpers.get_coffee(self) is True:
-            Helpers.rename_file(self, "cson")
+            sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+            indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
+
+            selection = sublime.Region(0, self.view.size())
+            self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
+
+            # set syntax to JSON
+            Helpers.set_json(self)
+            Helpers.rename_file(self, "json")
+        else:
+            # Get CSON settings
+            sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("cson_sort_keys") or True
+            indent = sublime.load_settings('Atomizr.sublime-settings').get("cson_indentation") or 2
+
+            # write converted data to view
+            selection = sublime.Region(0, self.view.size())
+            self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
+
+            # set syntax to CSON, requires supported CoffeeScript package
+            if Helpers.get_coffee(self) is True:
+                Helpers.rename_file(self, "cson")
 
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
@@ -110,14 +138,15 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
 
         output = SublimeText.write_json(data)
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("jsonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("jsonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        Helpers.set_json(self, "sublime-completions")
+        Helpers.set_json(self)
+        Helpers.rename_file(self, "sublime-completions")
 
 # Convert Atom format
 class AtomToAtomCommand(sublime_plugin.TextCommand):
@@ -151,16 +180,15 @@ class AtomToVscodeCommand(sublime_plugin.TextCommand):
         for key in data.keys():
             output = data[key]
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("jsonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("jsonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        # if Helpers.get_json(self) is True:
-            # Helpers.rename_file(self, "json")
-        Helpers.set_json(self, "json")
+        Helpers.set_json(self)
+        Helpers.rename_file(self, "json")
 
 # Converts Sublime Text snippets into Visual Studio Code snippets
 class SublToVscodeCommand(sublime_plugin.TextCommand):
@@ -187,16 +215,15 @@ class SublToVscodeCommand(sublime_plugin.TextCommand):
 
         output = VsCode.write_json(data)
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("jsonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("jsonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        # if Helpers.get_json(self) is True:
-            # Helpers.rename_file(self, "json")
-        Helpers.set_json(self, "json")
+        Helpers.set_json(self)
+        Helpers.rename_file(self, "sublime-completions")
 
         # Converts Sublime Text snippets into Sublime Text completions
 class SublJsonToXml(sublime_plugin.TextCommand):
@@ -216,9 +243,8 @@ class SublJsonToXml(sublime_plugin.TextCommand):
         self.view.replace(edit, selection, XML_GENERATOR + output)
 
         # set syntax to XML
-        # if Helpers.get_xml(self) is True:
-        #     Helpers.rename_file(self, "sublime-snippet")
-        Helpers.set_xml(self, "sublime-snippet")
+        Helpers.set_xml(self)
+        Helpers.rename_file(self, "sublime-snippet")
 
 # Converts Sublime Text snippets into Sublime Text completions
 class SublXmlToJson(sublime_plugin.TextCommand):
@@ -235,15 +261,16 @@ class SublXmlToJson(sublime_plugin.TextCommand):
 
         output = SublimeText.write_json(data)
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("jsonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("jsonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to JSON
-        Helpers.set_json(self, "sublime-completions")
+        Helpers.set_json(self)
+        Helpers.rename_file(self, "sublime-completions")
 
 # Converts Atom snippets (CSON into JSON)
 class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
@@ -261,17 +288,16 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
             return
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("jsonSortKeys") or False
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("jsonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or False
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(data, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
 
         # set syntax to JSON
-        # if Helpers.get_json(self) is True:
-            # Helpers.rename_file(self, "json")
-        Helpers.set_json(self, "json")
+        Helpers.set_json(self)
+        Helpers.rename_file(self, "json")
 
 # Converts Atom snippets (JSON into CSON)
 class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
@@ -289,8 +315,8 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
             sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
             return
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("csonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("csonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("cson_sort_keys") or True
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("cson_indentation") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
@@ -334,16 +360,31 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
             ".source": data
         }
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("csonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("csonIndent") or 2
+        json_snippets = sublime.load_settings('Atomizr.sublime-settings').get("atom_json_snippets") or False
 
-        # write converted data to view
-        selection = sublime.Region(0, self.view.size())
-        self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
+        if json_snippets is True:
 
-        # set syntax to CSON, requires supported CoffeeScript package
-        if Helpers.get_coffee(self) is True:
-            Helpers.rename_file(self, "cson")
+            sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+            indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
+
+            selection = sublime.Region(0, self.view.size())
+            self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent, separators=(',', ': ')))
+
+            # set syntax to JSON
+            Helpers.set_json(self)
+            Helpers.rename_file(self, "json")
+        else:
+            # Get CSON settings
+            sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("cson_sort_keys") or True
+            indent = sublime.load_settings('Atomizr.sublime-settings').get("cson_indentation") or 2
+
+            # write converted data to view
+            selection = sublime.Region(0, self.view.size())
+            self.view.replace(edit, selection, ATOM_GENERATOR + cson.dumps(output, sort_keys=sort_keys, indent=indent))
+
+            # set syntax to CSON, requires supported CoffeeScript package
+            if Helpers.get_coffee(self) is True:
+                Helpers.rename_file(self, "cson")
 
 # Convert Visual Studio Code into Atom snippets
 class VscodeToSublCommand(sublime_plugin.TextCommand):
@@ -360,12 +401,13 @@ class VscodeToSublCommand(sublime_plugin.TextCommand):
 
         output = SublimeText.write_json(data)
 
-        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("jsonSortKeys") or True
-        indent = sublime.load_settings('Atomizr.sublime-settings').get("jsonIndent") or 2
+        sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
+        indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 
         # write converted data to view
         selection = sublime.Region(0, self.view.size())
         self.view.replace(edit, selection, json.dumps(output, sort_keys=sort_keys, indent=indent))
 
         # set syntax to JSON
-        Helpers.set_json(self, "sublime-completions")
+        Helpers.set_json(self)
+        Helpers.rename_file(self, "sublime-completions")
