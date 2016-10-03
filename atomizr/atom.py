@@ -15,7 +15,7 @@ class Atom():
             return False
 
         completions = []
-        scope_replacements = sublime.load_settings('Atomizr.sublime-settings').get("scopeReplacements") or True
+        scope_replacements = sublime.load_settings('Atomizr.sublime-settings').get("scope_replacements") or True
 
         # but is it an Atom snippet?
         try:

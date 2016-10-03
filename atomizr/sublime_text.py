@@ -15,7 +15,7 @@ class SublimeText():
             sublime.error_message("Atomizr\n\nInvalid JSON")
             return False
 
-        scope_replacements = sublime.load_settings('Atomizr.sublime-settings').get("scopeReplacements")
+        scope_replacements = sublime.load_settings('Atomizr.sublime-settings').get("scope_replacements")
 
         output = {}
         # but is it a Sublime Text completion?
