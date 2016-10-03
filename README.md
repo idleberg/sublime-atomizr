@@ -73,7 +73,7 @@ Some of the default conversion settings can be modified from the *Package Settin
 * Indentation level (`int`)
 * Sort keys (`boolean`)
 * Scope replacement rules (`array`)
-* Atom snippet syntax format (`boolean)
+* Atom snippet syntax format (`boolean`)
 
 # License
 
