@@ -1,27 +1,27 @@
 {
     // Renames files after conversion, improves file syntax detection
-    "renameFiles": true,
+    "rename_files": true,
 
     // Adds trailing tab-stops to created Atom snippets. Since you can't
     // tab-stop past the snippet, this is recommended.
-    "addTrailingTabstops": true,
+    "add_trailing_tabstops": true,
 
     // Unlike Atom snippets, Sublime completions/snippet don't need a trailing
     // tab-stop to jump past the snippet. Hence, we can remove it!
-    "removeTrailingTabstops": true,
+    "remove_trailing_tabstops": true,
 
     // CSON Options
-    "csonSortKeys": true,
-    "csonIndent": 2,
+    "cson_sort_keys": true,
+    "cson_indentation": 2,
 
     // JSON Options
-    "jsonSortKeys": true,
-    "jsonIndent": 2,
+    "json_sort_keys": true,
+    "json_indentation": 2,
 
     // Syntax scopes in Sublime Text and Atom don't always match, here you can
     // add your own rules or edit the existing ones.
     // More info at https://gist.github.com/idleberg/fca633438329cc5ae327
-    "scopeReplacements": [
+    "scope_replacements": [
         [ "source.c++", ".source.cpp" ],
         [ "source.java-props", ".source.java-properties" ],
         [ "source.objc++", ".source.objcpp" ],
@@ -29,5 +29,8 @@
         [ "source.scss", ".source.css.scss" ],
         [ "source.todo", ".text.todo" ],
         [ "source.markdown", ".source.gfm" ]
-    ]
+    ],
+
+    // Atom snippets can be saved as CSON or JSON
+    "atom_json_snippets": false
 }
