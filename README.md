@@ -33,14 +33,15 @@ Action                                     | Input           | Output
 Automatic conversion¹                      | `CSON|JSON|XML` | `CSON|JSON|XML`
 Convert Atom to Sublime Text               | `CSON|JSON`     | `JSON`
 Convert Atom to Visual Studio Code         | `CSON|JSON`     | `JSON`
-Convert Sublime Text to Atom               | `JSON|XML`      | `CSON`
+Convert Sublime Text to Atom²              | `JSON|XML`      | `CSON|JSON`
 Convert Sublime Text to Visual Studio Code | `JSON|XML`      | `JSON`
-Convert Visual Studio Code to Atom         | `JSON`          | `CSON`
+Convert Visual Studio Code to Atom²        | `JSON`          | `CSON|JSON`
 Convert Visual Studio Code to Sublime Text | `JSON`          | `JSON`
 Toggle Atom format                         | `CSON|JSON`     | `JSON|CSON`
 Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
-¹⁾ converts Atom and Sublime Text only
+¹⁾ converts Atom and Sublime Text only  
+²⁾ target syntax can be specified in the settings  
 
 **Note:** Since automatic conversion is based on scope, make sure the a supported CoffeeScript package is installed as well. Using [Better CoffeeScript](https://packagecontrol.io/packages/Better%20CoffeeScript) is recommended, though [CoffeeScript](https://packagecontrol.io/packages/CoffeeScript), [IcedCoffeeScript](https://packagecontrol.io/packages/IcedCoffeeScript) and [Mongoose CoffeeScript](https://packagecontrol.io/packages/Mongoose%20CoffeeScript) are also supported.
 
@@ -72,6 +73,7 @@ Some of the default conversion settings can be modified from the *Package Settin
 * Indentation level (`int`)
 * Sort keys (`boolean`)
 * Scope replacement rules (`array`)
+* Atom snippet syntax format (`boolean)
 
 # License
 

@@ -3,7 +3,7 @@ import sublime
 class Helpers():
 
     def rename_file(self, extension):
-        if sublime.load_settings('Atomizr.sublime-settings').get("renameFiles") != True:
+        if sublime.load_settings('Atomizr.sublime-settings').get("rename_files") != True:
             return
 
         import os
@@ -24,7 +24,7 @@ class Helpers():
 
         m = re.search(r'\$\d+$', input)
 
-        if m is not None or sublime.load_settings('Atomizr.sublime-settings').get("addTrailingTabstops") == False:
+        if m is not None or sublime.load_settings('Atomizr.sublime-settings').get("add_trailing_tabstops") == False:
             # nothing to do here
             return input
 
@@ -35,28 +35,28 @@ class Helpers():
 
         m = re.search(r'\$\d+$', input)
 
-        if m is None or sublime.load_settings('Atomizr.sublime-settings').get("removeTrailingTabstops") == False:
+        if m is None or sublime.load_settings('Atomizr.sublime-settings').get("remove_trailing_tabstops") == False:
             # nothing to do here
             return input
 
         # remove tabstop
         return re.sub(r'\$\d+$', "", input)
 
-    def set_xml(this, extension):
+    def set_xml(this):
         if sublime.version() >= "3103":
             this.view.set_syntax_file('Packages/XML/XML.sublime-syntax')
         else:
             this.view.set_syntax_file('Packages/XML/XML.tmLanguage')
 
-        this.rename_file(this, extension)
+        # this.rename_file(this)
 
-    def set_json(this, extension):
+    def set_json(this):
         if sublime.version() >= "3103":
             this.view.set_syntax_file('Packages/JavaScript/JSON.sublime-syntax')
         else:
             this.view.set_syntax_file('Packages/JavaScript/JSON.tmLanguage')
 
-        this.rename_file(this, extension)
+        # this.rename_file(this)
 
     def get_coffee(this):
         import os
