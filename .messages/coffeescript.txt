@@ -6,11 +6,11 @@ the “Better CoffeeScript” package in order to use all features of Atomizr.
 
 Otherwise, please read on.
 
-You can install “Better CoffeePress” in many different ways, the most
+You can install “Better CoffeeScript” in many different ways, the most
 convenient being through Package Control:
 
     1. Choose “Install Package” from the Command Palette
-    2. Type “Better CoffeePress” and press Enter
+    2. Type “Better CoffeeScript” and press Enter
 
 Other ways to install the package are described on its GitHub page:
 
