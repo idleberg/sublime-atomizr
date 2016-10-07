@@ -86,6 +86,9 @@ class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
             if Helpers.get_coffee(self) is True:
                 Helpers.rename_file(self, "cson")
 
+        # Reset selection
+        Helpers.reset_selection(self)
+
 # Converts Sublime Text completions into Atom snippets
 class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -124,6 +127,9 @@ class SublSnippetsToAtomCommand(sublime_plugin.TextCommand):
             if Helpers.get_coffee(self) is True:
                 Helpers.rename_file(self, "cson")
 
+        # Reset selection
+        Helpers.reset_selection(self)
+
 # Converts Atom snippets into Sublime Text completions
 class AtomToSublCommand(sublime_plugin.TextCommand):
 
@@ -147,6 +153,9 @@ class AtomToSublCommand(sublime_plugin.TextCommand):
         # set syntax to JSON
         Helpers.set_json(self)
         Helpers.rename_file(self, "sublime-completions")
+
+        # Reset selection
+        Helpers.reset_selection(self)
 
 # Convert Atom format
 class AtomToAtomCommand(sublime_plugin.TextCommand):
@@ -190,6 +199,9 @@ class AtomToVscodeCommand(sublime_plugin.TextCommand):
         Helpers.set_json(self)
         Helpers.rename_file(self, "json")
 
+        # Reset selection
+        Helpers.reset_selection(self)
+
 # Converts Sublime Text snippets into Visual Studio Code snippets
 class SublToVscodeCommand(sublime_plugin.TextCommand):
 
@@ -225,6 +237,9 @@ class SublToVscodeCommand(sublime_plugin.TextCommand):
         Helpers.set_json(self)
         Helpers.rename_file(self, "sublime-completions")
 
+        # Reset selection
+        Helpers.reset_selection(self)
+
 # Converts Sublime Text snippets into Sublime Text completions
 class SublJsonToXml(sublime_plugin.TextCommand):
 
@@ -245,6 +260,9 @@ class SublJsonToXml(sublime_plugin.TextCommand):
         # set syntax to XML
         Helpers.set_xml(self)
         Helpers.rename_file(self, "sublime-snippet")
+
+        # Reset selection
+        Helpers.reset_selection(self)
 
 # Converts Sublime Text snippets into Sublime Text completions
 class SublXmlToJson(sublime_plugin.TextCommand):
@@ -271,6 +289,9 @@ class SublXmlToJson(sublime_plugin.TextCommand):
         # set syntax to JSON
         Helpers.set_json(self)
         Helpers.rename_file(self, "sublime-completions")
+
+        # Reset selection
+        Helpers.reset_selection(self)
 
 # Converts Atom snippets (CSON into JSON)
 class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
@@ -299,6 +320,9 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
         Helpers.set_json(self)
         Helpers.rename_file(self, "json")
 
+        # Reset selection
+        Helpers.reset_selection(self)
+
 # Converts Atom snippets (JSON into CSON)
 class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
 
@@ -325,6 +349,9 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
         # set syntax to CSON, requires supported CoffeeScript package
         if Helpers.get_coffee(self) is True:
             Helpers.rename_file(self, "cson")
+
+        # Reset selection
+        Helpers.reset_selection(self)
 
 # Convert Atom format
 class SublToSublCommand(sublime_plugin.TextCommand):

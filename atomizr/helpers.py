@@ -107,3 +107,7 @@ class Helpers():
 
         # Scroll to scope definition
         this.view.set_viewport_position( [0, verticalPos] )
+
+    def reset_selection(this):
+        this.view.selection.clear()
+        this.view.selection.add( sublime.Region( 0, 0 ) )
