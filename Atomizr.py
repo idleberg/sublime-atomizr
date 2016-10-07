@@ -372,7 +372,7 @@ class SublToSublCommand(sublime_plugin.TextCommand):
 class VscodeToAtomCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        import json, cson
+        import json, cson, sublime
 
         # read data from view
         input = self.view.substr(sublime.Region(0, self.view.size()))
@@ -413,7 +413,7 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
             if Helpers.get_coffee(self) is True:
                 Helpers.rename_file(self, "cson")
 
-        Helpers.select_scope(self, ATOM_GENERATOR, False)
+        Helpers.select_scope(self, "atom", ATOM_GENERATOR)
 
 # Convert Visual Studio Code into Atom snippets
 class VscodeToSublCommand(sublime_plugin.TextCommand):
@@ -441,4 +441,4 @@ class VscodeToSublCommand(sublime_plugin.TextCommand):
         Helpers.set_json(self)
         Helpers.rename_file(self, "sublime-completions")
 
-        Helpers.select_scope(self, ATOM_GENERATOR, True)
+        Helpers.select_scope(self, "sublime", None)

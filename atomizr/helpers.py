@@ -90,15 +90,22 @@ class Helpers():
         sublime.error_message("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
         return False
 
-    def select_scope(this, meta, scroll_down):
-        if scroll_down is True:
+    def select_scope(this, target, meta):
+
+        if target is "atom":
+            if sublime.load_settings('Atomizr.sublime-settings').get("atom_json_snippets") is True:
+                verticalPos = 0
+                selectionStart = 5
+            else:
+                verticalPos = this.view.size()
+                selectionStart = len(meta) + 1
+            selectionEnd = selectionStart + len(".source")
+        else:
             verticalPos = this.view.size()
             selectionEnd = verticalPos - 3
             selectionStart = selectionEnd - len(".source") + 1
-        else:
-            selectionStart = len(meta) + 1
-            selectionEnd = selectionStart + len(".source")
-            verticalPos = 0
+
+
         newSelection = sublime.Region( selectionStart, selectionEnd )
 
         # Selected scope
