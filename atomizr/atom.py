@@ -10,8 +10,9 @@ class Atom():
         # interprete and validate data
         try:
             data = cson.loads(input)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid CSON, aborting conversion. See console for details.")
+            print(e)
             return False
 
         completions = []
@@ -46,7 +47,7 @@ class Atom():
                         completions.append( {"trigger": trigger, "contents": contents, "description": description} )
 
         except:
-            sublime.error_message("Atomizr\n\nNot an Atom snippet file")
+            sublime.message_dialog("Atomizr\n\nNot an Atom snippet file")
             return False
 
         output = {

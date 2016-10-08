@@ -87,17 +87,17 @@ class Helpers():
                         this.view.set_syntax_file("Packages/" + package + "/CoffeeScript.tmLanguage")
                         return True
 
-        sublime.error_message("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
+        sublime.message_dialog("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
         return False
 
     def select_scope(this, target, meta):
 
         if target is "atom":
             if sublime.load_settings('Atomizr.sublime-settings').get("atom_json_snippets") is True:
-                verticalPos = 0
+                verticalPos = this.view.size()
                 selectionStart = 5
             else:
-                verticalPos = this.view.size()
+                verticalPos = 0
                 selectionStart = len(meta) + 1
             selectionEnd = selectionStart + len(".source")
         else:

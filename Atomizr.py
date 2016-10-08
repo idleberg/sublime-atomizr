@@ -25,9 +25,9 @@ class AutomizrCommand(sublime_plugin.TextCommand):
             print("Atomizr: XML detected, trying to convert")
             self.view.run_command('subl_snippets_to_atom')
         elif "text.plain" in scope:
-            sublime.error_message("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
+            sublime.message_dialog("Atomizr\n\nAutomatic conversion requires a supported CoffeeScript package to be installed")
         else:
-            sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
+            sublime.message_dialog("Atomizr\n\nUnsupported scope, aborting")
 
 # Converts Sublime Text into Atom snippets
 class SublToAtomCommand(sublime_plugin.TextCommand):
@@ -43,7 +43,7 @@ class SublToAtomCommand(sublime_plugin.TextCommand):
             print("Atomizr: XML detected, trying to convert")
             self.view.run_command('subl_snippets_to_atom')
         else:
-            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
+            sublime.message_dialog("Atomizr\n\nNot a Sublime Text completions file")
 
 # Converts Sublime Text completions into Atom snippets
 class SublCompletionsToAtomCommand(sublime_plugin.TextCommand):
@@ -170,7 +170,7 @@ class AtomToAtomCommand(sublime_plugin.TextCommand):
             print("Atomizr: CSON detected, trying to convert to JSON")
             self.view.run_command('atom_cson_to_json')
         else:
-            sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
+            sublime.message_dialog("Atomizr\n\nUnsupported scope, aborting")
 
 # Converts Atom snippets into Visual Studio Code snippets
 class AtomToVscodeCommand(sublime_plugin.TextCommand):
@@ -183,10 +183,14 @@ class AtomToVscodeCommand(sublime_plugin.TextCommand):
 
         try:
             data = cson.loads(input)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid CSON, aborting conversion. See console for details.")
+            print(e)
 
         for key in data.keys():
+            if key[0] != ".":
+                sublime.message_dialog("Atomizr\n\nNot an Atom snippet file")
+                return
             output = data[key]
 
         sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
@@ -220,7 +224,7 @@ class SublToVscodeCommand(sublime_plugin.TextCommand):
             print("Atomizr: XML detected, trying to convert")
             data = SublimeText.read_xml(input)
         else:
-            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
+            sublime.message_dialog("Atomizr\n\nNot a Sublime Text completions file")
 
         if data is False:
             return
@@ -305,9 +309,9 @@ class AtomCsonToJsonCommand(sublime_plugin.TextCommand):
         # interprete and validate data
         try:
             data = cson.loads(selection)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid CSON, aborting conversion")
-            return
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid CSON, aborting conversion. See console for details.")
+            print(e)
 
         sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or False
         indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
@@ -335,9 +339,9 @@ class AtomJsonToCsonCommand(sublime_plugin.TextCommand):
         # interprete and validate data
         try:
             data = json.loads(selection)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
-            return
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid JSON, aborting conversion. See console for details.")
+            print(e)
 
         sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("cson_sort_keys") or True
         indent = sublime.load_settings('Atomizr.sublime-settings').get("cson_indentation") or 2
@@ -366,7 +370,7 @@ class SublToSublCommand(sublime_plugin.TextCommand):
             print("Atomizr: XML detected, trying to convert to JSON")
             self.view.run_command('subl_xml_to_json')
         else:
-            sublime.error_message("Atomizr\n\nUnsupported scope, aborting")
+            sublime.message_dialog("Atomizr\n\nUnsupported scope, aborting")
 
 # Convert Visual Studio Code into Atom snippets
 class VscodeToAtomCommand(sublime_plugin.TextCommand):
@@ -379,9 +383,9 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
 
         try:
             data = json.loads(input)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
-            return False
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid JSON, aborting conversion. See console for details.")
+            print(e)
 
         output = {
             ".source": data
@@ -390,7 +394,7 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
         json_snippets = sublime.load_settings('Atomizr.sublime-settings').get("atom_json_snippets") or False
 
         if json_snippets is True:
-
+            # Get JSON settings
             sort_keys = sublime.load_settings('Atomizr.sublime-settings').get("json_sort_keys") or True
             indent = sublime.load_settings('Atomizr.sublime-settings').get("json_indentation") or 2
 

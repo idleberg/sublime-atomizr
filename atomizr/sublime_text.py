@@ -11,8 +11,9 @@ class SublimeText():
         # interprete and validate data
         try:
             data = json.loads(input)
-        except ValueError:
-            sublime.error_message("Atomizr\n\nInvalid JSON")
+        except ValueError as e:
+            sublime.message_dialog("Atomizr\n\nInvalid JSON, aborting conversion. See console for details.")
+            print(e)
             return False
 
         scope_replacements = sublime.load_settings('Atomizr.sublime-settings').get("scope_replacements")
@@ -29,7 +30,7 @@ class SublimeText():
                     output["scope"] = data['scope']
 
         except:
-            sublime.error_message("Atomizr\n\nNot a Sublime Text completions file")
+            sublime.message_dialog("Atomizr\n\nNot a Sublime Text completions file")
             return False
         
         output["completions"] = data['completions']
@@ -66,13 +67,14 @@ class SublimeText():
 
     def read_xml(input):
         """Reads Sublime Text snippets (Plist), returns object"""
-        import xmltodict
+        import sys, xmltodict
 
         # interprete and validate data
         try:
             xml = xmltodict.parse(input)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid XML, aborting conversion")
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid XML, aborting conversion. See console for details.")
+            print(e)
             return False
 
         scope = xml['snippet']['scope']

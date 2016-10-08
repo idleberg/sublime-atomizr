@@ -10,8 +10,9 @@ class VsCode():
         # interprete and validate data
         try:
             data = json.loads(input)
-        except:
-            sublime.error_message("Atomizr\n\nInvalid JSON, aborting conversion")
+        except BaseException as e:
+            sublime.message_dialog("Atomizr\n\nInvalid JSON, aborting conversion. See console for details.")
+            print(e)
             return False
 
         completions = []
@@ -30,7 +31,7 @@ class VsCode():
                     completions.append( {"trigger": prefix, "contents": body} )
 
         except:
-            sublime.error_message("Atomizr\n\nNot a Visual Studio Code snippet file")
+            sublime.message_dialog("Atomizr\n\nNot a Visual Studio Code snippet file")
             return False
 
         output = {
