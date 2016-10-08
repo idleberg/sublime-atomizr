@@ -25,7 +25,7 @@ var jsonFiles = [
     '**/*.sublime-keymap',
     '**/*.sublime-macro',
     '**/*.sublime-menu',
-    '**/*.sublime-settings',
+    // '**/*.sublime-settings',
     '**/*.sublime-theme',
     'messages.json'
 ];
