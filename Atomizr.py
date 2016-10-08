@@ -387,6 +387,15 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
             sublime.message_dialog("Atomizr\n\nInvalid JSON, aborting conversion. See console for details.")
             print(e)
 
+        for key in data.keys():
+            if key[0] == ".":
+                sublime.message_dialog("Atomizr\n\nNot an Visual Studio Code snippet file")
+                return
+
+        if "completions" in data or "scope" in data:
+            sublime.message_dialog("Atomizr\n\nNot an Visual Studio Code snippet file")
+            return
+
         output = {
             ".source": data
         }
