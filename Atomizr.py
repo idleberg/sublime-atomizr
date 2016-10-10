@@ -388,13 +388,9 @@ class VscodeToAtomCommand(sublime_plugin.TextCommand):
             print(e)
 
         for key in data.keys():
-            if key[0] == ".":
+            if key[0] == "." or "completions" in data or "scope" in data:
                 sublime.message_dialog("Atomizr\n\nNot a Visual Studio Code snippet file")
                 return
-
-        if "completions" in data or "scope" in data:
-            sublime.message_dialog("Atomizr\n\nNot a Visual Studio Code snippet file")
-            return
 
         output = {
             ".source": data
