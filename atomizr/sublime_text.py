@@ -45,7 +45,7 @@ class SublimeText():
             completion = {}
 
             # Split tab-separated description
-            if "\t" in item['trigger']:
+            if "\t" in item['trigger'] and sublime.load_settings('Atomizr.sublime-settings').get("ignore_tab_separator") is not True:
                 tabs = item['trigger'].split("\t")
 
                 if len(tabs) > 2:

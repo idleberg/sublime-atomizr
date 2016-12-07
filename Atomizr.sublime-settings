@@ -10,6 +10,10 @@
     // tab-stop to jump past the snippet. Hence, we can remove it!
     "remove_trailing_tabstops": true,
 
+    // By default, the tab-separator `\t` is used to split the trigger and the
+    // description of a completion
+    "ignore_tab_separator": false,
+
     // CSON Options
     "cson_sort_keys": true,
     "cson_indentation": 2,
