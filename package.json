@@ -1,13 +1,13 @@
 {
   "name": "sublimetext-gulpfile.js",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Jan T. Sott",
   "repositoy": "https://github.com/idleberg/sublimetext-gulpfile.js",
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-debug": "^2.1.2",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-debug": "^3.0.0",
     "gulp-jsonlint": "^1.1.2",
     "gulp-xml-validator": "^0.1.1",
     "gulp-yaml-validate": "^1.0.2"
