@@ -26,9 +26,7 @@
     // add your own rules or edit the existing ones.
     // More info at https://gist.github.com/idleberg/fca633438329cc5ae327
     "scope_replacements": [
-        [ "source.c++", ".source.cpp" ],
         [ "source.java-props", ".source.java-properties" ],
-        [ "source.objc++", ".source.objcpp" ],
         [ "source.php", ".source.html.php" ],
         [ "source.scss", ".source.css.scss" ],
         [ "source.todo", ".text.todo" ],
