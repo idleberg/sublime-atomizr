@@ -2,7 +2,7 @@
  * sublimetext-gulpfile.js
  * https://github.com/idleberg/sublimetext-gulpfile.js
  *
- * Copyright (c) 2014-2016 Jan T. Sott
+ * Copyright (c) 2014-2017 Jan T. Sott
  * Licensed under the MIT license.
  */
 
