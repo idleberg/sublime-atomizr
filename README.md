@@ -7,7 +7,7 @@
 
 Convert Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa.
 
-Also available for [Atom](https://github.com/idleberg/atom-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr) (see the [comparison chart](https://gist.github.com/idleberg/db6833ee026d2cd7c043bba36733b701)).
+Also available for [Atom](https://github.com/idleberg/atom-atomizr) and the [command line](https://github.com/idleberg/node-atomizr) (see the [comparison chart](https://gist.github.com/idleberg/db6833ee026d2cd7c043bba36733b701)).
 
 ## Installation
 
@@ -28,17 +28,17 @@ Since [package dependencies](https://packagecontrol.io/docs/dependencies) are ha
 
 The [Command Palette](http://docs.sublimetext.info/en/latest/reference/command_palette.html) currently offers the following commands, each prefixed with “Atomizr”:
 
-Action                                     | Input           | Output
--------------------------------------------|-----------------|----------------
-Automatic conversion¹                      | `CSON|JSON|XML` | `CSON|JSON|XML`
-Convert Atom to Sublime Text               | `CSON|JSON`     | `JSON`
-Convert Atom to Visual Studio Code         | `CSON|JSON`     | `JSON`
-Convert Sublime Text to Atom²              | `JSON|XML`      | `CSON|JSON`
-Convert Sublime Text to Visual Studio Code | `JSON|XML`      | `JSON`
-Convert Visual Studio Code to Atom²        | `JSON`          | `CSON|JSON`
-Convert Visual Studio Code to Sublime Text | `JSON`          | `JSON`
-Toggle Atom format                         | `CSON|JSON`     | `JSON|CSON`
-Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
+Action                                     | Input             | Output
+-------------------------------------------|-------------------|----------------
+Automatic conversion¹                      | `CSON\|JSON\|XML` | `CSON\|JSON\|XML`
+Convert Atom to Sublime Text               | `CSON\|JSON`      | `JSON`
+Convert Atom to Visual Studio Code         | `CSON\|JSON`      | `JSON`
+Convert Sublime Text to Atom²              | `JSON\|XML`       | `CSON\|JSON`
+Convert Sublime Text to Visual Studio Code | `JSON\|XML`       | `JSON`
+Convert Visual Studio Code to Atom²        | `JSON`            | `CSON\|JSON`
+Convert Visual Studio Code to Sublime Text | `JSON`            | `JSON`
+Toggle Atom format                         | `CSON\|JSON`      | `JSON\|CSON`
+Toggle Sublime Text format                 | `JSON\|XML`       | `XML\|JSON`
 
 ¹⁾ converts Atom and Sublime Text only  
 ²⁾ target syntax can be specified in the settings  
