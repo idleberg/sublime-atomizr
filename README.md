@@ -1,9 +1,9 @@
 # Atomizr for Sublime Text
 
-[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+[![The MIT License](https://flat.badgen.net/badge/license/MIT/orange)](http://opensource.org/licenses/MIT)
+[![GitHub](https://flat.badgen.net/github/release/idleberg/sublime-atomizr)](https://github.com/idleberg/sublime-atomizr/releases)
 [![Package Control](https://packagecontrol.herokuapp.com/downloads/Atomizr.svg?style=flat-square)](https://packagecontrol.io/packages/Atomizr)
-[![GitHub release](https://img.shields.io/github/release/idleberg/sublime-atomizr.svg?style=flat-square)](https://github.com/idleberg/sublime-atomizr/releases)
-[![Travis](https://img.shields.io/travis/idleberg/sublime-atomizr.svg?style=flat-square)](https://travis-ci.org/idleberg/sublime-atomizr)
+[![CircleCI](https://flat.badgen.net/circleci/github/idleberg/sublime-atomizr)](https://circleci.com/gh/idleberg/sublime-atomizr)
 
 Convert Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa.
 
