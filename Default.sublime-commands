@@ -16,7 +16,7 @@
         "command": "subl_snippets_to_atom"
     },
     {
-        "caption": "Atomizr: Convert Sublime Text to Visual Code",
+        "caption": "Atomizr: Convert Sublime Text to Visual Studio Code",
         "command": "subl_to_vscode"
     },
     {
@@ -24,15 +24,15 @@
         "command": "atom_to_subl"
     },
     {
-        "caption": "Atomizr: Convert Atom to Visual Code",
+        "caption": "Atomizr: Convert Atom to Visual Studio Code",
         "command": "atom_to_vscode"
     },
     {
-        "caption": "Atomizr: Convert Visual Code to Atom",
+        "caption": "Atomizr: Convert Visual Studio Code to Atom",
         "command": "vscode_to_atom"
     },
     {
-        "caption": "Atomizr: Convert Visual Code to Sublime Text",
+        "caption": "Atomizr: Convert Visual Studio Code to Sublime Text",
         "command": "vscode_to_subl"
     },
     {
