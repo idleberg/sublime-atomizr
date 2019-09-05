@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "sublime-linter": "^0.2.0"
+    "sublime-linter": "^0.4.2"
   },
   "scripts": {
     "test": "sublime-linter"
